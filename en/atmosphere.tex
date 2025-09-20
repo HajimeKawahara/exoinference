@@ -1,0 +1,156 @@
+\section{Gravity and Planetary Atmospheres}
+
+A planetary atmosphere is gravitationally bound to the planetary surface; in other words, gravity largely sets the overall atmospheric structure. To clarify the relationship between gravity and atmospheric structure, we simplify the atmosphere with the following assumptions:
+\begin{itemize}
+    \item The atmospheric layer is thin and can be approximated as a plane–parallel slab.
+    \item The atmosphere is isothermal.
+    \item The atmosphere behaves as an ideal gas.
+    \item There is no vertical bulk motion; pressure and gravity are in balance.
+\end{itemize}
+Under these assumptions we introduce the atmospheric scale height, a key length scale.
+
+\subsection*{Equation of State for an Ideal Gas \label{ss:idealgass}}
+
+For a single–component ideal gas, the equation of state in terms of pressure $P$, temperature $T$, and number density $n\,[\mathrm{cm^{-3}}]$ is
+\begin{eqnarray}
+\label{eq:ideal}
+P = n k_B T .
+\end{eqnarray}
+Using Avogadro’s number $N_A=6.0221367 \times 10^{23}$, this can also be written as
+\begin{eqnarray}
+\label{eq:idealRastmol}
+P &=& R^\prime n^\prime T ,
+\end{eqnarray}
+where $R^\prime = N_A k_B = 8.3144598 \times 10^7\, [\mathrm{erg/K/mol}]$ is the universal gas constant\index{universal gas constant@universal gas constant}, and $n^\prime$ is the molar number density $[\mathrm{mol \, cm^{-3}}]$. Expressing Eq.~(\ref{eq:ideal}) in terms of the mass density $\rho = \mu m_H n \,\,[\mathrm{g \, cm^{-3}}]$ (with $\mu$ the mean molecular weight and $m_H$ the proton mass) gives
+\begin{eqnarray}
+\label{eq:idealRast}
+P &=& \frac{k_B}{\mu m_H} \rho T .
+\end{eqnarray}
+Introducing the specific gas constant $R \,\,[\mathrm{erg/g/K}]$,
+\begin{eqnarray}
+\label{eq:idealR}
+P &=& R \rho T ,\\
+R &\equiv& \frac{k_B}{\mu m_H} .
+\end{eqnarray}
+Thus one must distinguish whether one is working with molar number density using $R^\prime$, or with (mass or number) density using $k_B$ or $R$. To remain consistent with conventions in astrophysics, we will primarily use ordinary number/mass densities. In meteorology, however, molar notation is common; care is required when comparing with or using values from that literature.
+
+\subsection*{Isothermal Hydrostatic Equilibrium \label{ss:atmscal}}
+
+In a thin atmospheric layer near the planetary surface, the gravitational acceleration
+\begin{eqnarray}
+g = - \frac{d \phi}{d r} = \frac{G M_p}{r^2}
+\end{eqnarray}
+(where $\phi=G M_p/r$ is the gravitational potential) can be approximated as constant with height $r$. Under this condition, hydrostatic equilibrium,
+\begin{eqnarray}
+\label{eq:pressureeq}
+\frac{d P(r)}{d r}  = \rho \frac{d \phi}{d r} =  - \rho g ,
+\end{eqnarray}
+combined with the equation of state (\ref{eq:idealRast}) yields the differential equation
+\begin{eqnarray}
+\frac{d P}{d r} = - \frac{P}{H} ,
+\end{eqnarray}
+whose solution is
+\begin{eqnarray}
+\label{eq:pusi}
+P(r) = P_0 \exp{\left( -\frac{r-r_0}{H} \right) } \equiv P_\mathrm{thin} (r) ,
+\end{eqnarray}
+with $P_0$ the pressure at $r_0$ as the boundary condition. Here
+\begin{align}
+\label{eq:scale_height}
+H &\equiv \frac{k_B T}{\mu m_H g} \\
+&\approx 8.4 \,\, \mathrm{km} \left( \frac{T}{300 \,\, \mathrm{K}} \right)
+ \left( \frac{\mu}{30} \right)^{-1} \left( \frac{g}{980 \,\, \mathrm{cm/s^2}} \right)^{-1}
+\end{align}
+is the (pressure) scale height. Thus a simple picture emerges: the characteristic vertical extent of the atmosphere is set by the ratio of thermal energy to gravity. Because a length scale for atmospheric height requires thermal energy, temperature information is essential.
+
+From Eq.~(\ref{eq:scale_height}), for example, hotter planets have larger scale heights and are therefore more readily observable. For rocky planets, where the bulk density is nearly independent of radius, $H$ scales inversely with radius. Hence a super-Earth with twice Earth’s radius has twice the radius but roughly half the atmospheric thickness, so the difficulty of atmospheric characterization by transmission spectroscopy is not drastically changed. From Eq.~(\ref{eq:pusi}), the height above $r_0$ at a level $r>r_0$ inferred from the pressure is
+\begin{eqnarray}
+\Delta r = (r - r_0) = H \log{\left(\frac{P_0}{P(r)}\right)} .
+\end{eqnarray}
+
+If we consider a thin isothermal layer of the atmosphere with geometric thickness $d z (> 0)$ and pressure thickness $d P (>0)$, then from Eq.~(\ref{eq:scale_height})
+\begin{eqnarray}
+\label{eq:conversion_z_P}
+\frac{d P}{P} = \frac{d z}{H} .
+\end{eqnarray}
+Thus, the change in height normalized by the scale height equals the fractional change in pressure. Trivially, from Eq.~(\ref{eq:pressureeq}), the conversion between height and pressure coordinates is
+\begin{eqnarray}
+\label{eq:pressureeq_}
+d z = \frac{d P}{\rho g} .
+\end{eqnarray}
+
+\section{Atmosphere and Molecular Abundances}
+
+In the previous section we assumed isothermality, but in general an atmosphere is not isothermal. As seen above, to express atmospheric height in units of length one needs temperature information; when the atmosphere is not isothermal, this quickly becomes complicated. A commonly used alternative is to use pressure in place of a geometric height coordinate. In this case, the vertical temperature structure is shown with pressure on the vertical axis and temperature on the horizontal axis; because pressure increases downward, the pressure axis is often plotted inverted to indicate altitude.
+
+When considering thermal emission, transmission, or reflection from an atmosphere, we need to convert between optical depth and pressure. From Eq.~(\ref{eq:pressureeq}),
+\begin{eqnarray}
+\label{eq:drdp}
+d r = - \frac{d P}{\rho g} ,
+\end{eqnarray}
+so, for an absorption cross section $\sigma$, the differential form of the optical depth is
+\begin{eqnarray}
+d \tau = - n \sigma \, d r = \frac{\sigma}{\mu m_H g}\, d P .
+\end{eqnarray}
+(The sign depends on where $\tau$ is measured from. Here we define $r \to \infty$ as $\tau \to 0$.) Note that this expression does not explicitly depend on temperature. In general, however, the cross section depends on temperature and pressure, and the mean molecular weight depends (strictly) on pressure through the vertical composition profile; thus,
+\begin{eqnarray}
+\label{eq:dtaudP}
+d \tau = \frac{\sigma(T,P)}{\mu (P)\, m_H \, g}\, d P .
+\end{eqnarray}
+Here we continue to assume a thin atmosphere so that $g$ is independent of pressure.\\
+
+\subsection*{Multicomponent Atmospheres}
+
+What if the atmosphere is a multicomponent mixture? Let $m_H$ be the proton mass. The partial pressure of the $i$-th constituent is
+\begin{eqnarray}
+\label{eq:idealRpa}
+P_i &=& k_B n_i T \;=\; R \rho_i T .
+\end{eqnarray}
+Now the relationships between mass density and number density are
+\begin{eqnarray}
+\label{eq:rhon}
+\rho &=& \sum_{i=1}^N \rho_i \;=\; m_H \sum_{i=1}^N \mu_i n_i \\
+&=& m_H \left( \sum_{i=1}^N \mu_i \frac{ n_i}{n} \right) n \;=\; m_H \, \mu \, n ,\\
+\label{eq:moc}
+\mu &\equiv& \sum_{i=1}^N \xi_i \mu_i ,
+\end{eqnarray}
+where we defined the total number density $n= \sum_{i=1}^N n_i$. Here $\mu$ is the mean molecular weight, and $\xi_i = n_i/n$ is the \emph{volume mixing ratio} (VMR)\index{Volume Mixing Ratio@Volume Mixing Ratio}. The VMR is related to partial pressure by
+\begin{eqnarray}
+\label{eq:partial_pressure}
+P_i = \xi_i P .
+\end{eqnarray}
+\footnote{A VMR is the ratio of the number of molecules of species $i$ to the total number of gas molecules. Why it is called a “volume” (rather than “number”) mixing ratio is historically rooted and somewhat unclear.}
+Dividing both sides of Eq.~(\ref{eq:moc}) by $\mu$ gives
+\begin{align}
+1 &=  \sum_{i=1}^N X_i ,\\
+\label{eq:mmr_vmr}
+X_i &=  \frac{\mu_i}{\mu} \, \xi_i \\
+& = \frac{\rho_i}{\rho} ,
+\end{align}
+where $X_i$ is the \emph{mass mixing ratio} (MMR)\index{Mass Mixing Ratio@Mass Mixing Ratio}, i.e., the mass fraction of species $i$ in the total gas.
+
+The equation of state written with mass density uses the mean molecular weight $\mu$ and takes the same form as for a single component:
+\begin{eqnarray}
+\label{eq:idealRpat}
+P &=&  \sum_{i=1}^N P_i \;=\; k_B n T \;=\; R \rho T ,\\
+R &\equiv& \frac{k_B}{\mu m_H} .
+\end{eqnarray}
+\\
+
+\subsection*{Retrieving Molecular Abundances and the Fundamental Degeneracy}
+
+For a multicomponent mixture, the opacity of species $i$ follows from Eqs.~(\ref{eq:partial_pressure}) and (\ref{eq:mmr_vmr}):
+\begin{align}
+d \tau_i &= - n_i \sigma_i \, d r \;=\; \frac{\sigma_i}{\mu m_H g}\, d P_i \\
+&= \frac{\xi_i \sigma_i}{\mu m_H g}\, d P  \\
+\label{eq:MMR_dP_dtau}
+&= \frac{X_i \sigma_i}{\mu_i m_H g}\, d P .
+\end{align}
+In Eq.~(\ref{eq:MMR_dP_dtau}), $\sigma_i$, $\mu_i$, and $m_H$ are set by physics/chemistry and independent of the specific atmosphere, while $X_i$ and $g$ are system-specific and are, from an observational standpoint, quantities to be inferred. However, $d\tau_i$ depends only on the combination $X_i/g$, so these two cannot be determined independently. Since the total optical depth (for molecular opacity only) is the linear sum
+\begin{align}
+\label{eq:mol}
+d \tau \;=\; - \sum_{i=1}^N n_i \sigma_i \, d r \;=\; \sum_{i=1}^N d \tau_i ,
+\end{align}
+what a spectrum constrains is not the absolute molecular abundance, but the ratio $X_i/g$ (mass mixing ratio divided by gravity). We refer to this as the \textbf{fundamental degeneracy}.
+
+For transiting systems, $g$ is determined from the RVs and the transit radius, so the fundamental degeneracy is not problematic. In cases relying solely on planetary thermal emission—e.g., direct spectroscopy of directly imaged planets or brown dwarfs—if only molecular line opacity is visible at the photosphere, the fundamental degeneracy cannot be broken. If continuum opacity (e.g., from hydrogen) is also detected, the degeneracy can be broken \cite{2025ApJ...988...53K}.

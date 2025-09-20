@@ -1,0 +1,125 @@
+\section{Schwarzschild Equation$^\ast$}
+
+Let $d\mathcal{E}_\nu$ be the energy carried by radiation within a wavenumber interval $d\nu$ that, in the direction $\mathbf{n}$, passes through an infinitesimal area $dS$ (with surface normal $\mathbf{k}$) into a solid angle $d\Omega$ during an infinitesimal time $dt$. The specific intensity $\Ilam$ is then defined by
+\begin{align}
+d \mathcal{E}_\nu = \Ilam \, (\mathbf{n}\!\cdot\!\mathbf{k}) \, dS \, d\Omega \, d\nu \, dt .
+\end{align}
+
+Radiation incident on a small cylindrical volume is attenuated by scattering and absorption in proportion to $\Ilam$. The proportionality constant is the \emph{extinction coefficient} \index{extinction coefficient@extinction coefficient} $\kappa_\nu$. The term \emph{opacity} \index{opacity@opacity} is used in various ways; here we adopt it to mean this extinction coefficient with units $[\mathrm{cm^2\,g^{-1}}]$. Since $\kappa_\nu$ is defined at a single frequency, it is strictly the \emph{monochromatic} opacity, though frequency-averaged opacities are also commonly referred to simply as opacities. If there is no emission within the cylinder, the energy removed per unit time by absorption and scattering over a path length $ds$ in material of density $\rho$ is
+\begin{align}
+- \kappa_\nu \Ilam \, \rho \, ds \, d\Omega \, d\nu \, dt \;=\; d\Ilam \, d\Omega \, d\nu \, dt ,
+\end{align}
+so that
+\begin{align}
+d \Ilam = - \kappa_\nu \Ilam \, \rho \, ds .
+\end{align}
+Define the emitted specific intensity from within the cylinder via the \emph{emission coefficient} \index{emission coefficient@emission coefficient} $\eta_\nu$ by
+\begin{align}
+d \Ilam = \eta_\nu \, \rho \, ds .
+\end{align}
+Combining the two gives
+\begin{align}
+d \Ilam = - \kappa_\nu \Ilam \, \rho \, ds + \eta_\nu \, \rho \, ds .
+\end{align}
+Introducing the \emph{source function} \index{source function@source function}
+\begin{align}
+\Jlam \equiv \frac{\eta_\nu}{\kappa_\nu} ,
+\end{align}
+the radiative transfer equation becomes
+\begin{align}
+\label{eq:radtran}
+\frac{d \Ilam}{\kappa_\nu \rho \, ds} \;=\; - \Ilam + \Jlam .
+\end{align}
+Define the optical depth by
+\begin{align}
+d\tau = - \kappa_\nu \rho \, dz ,
+\label{eq:opticalddef}
+\end{align}
+and, taking a Cartesian axis $z$ with $ds=\mu\,dz$ and $\mu=\cos\theta$, we obtain
+\begin{align}
+\label{eq:radtrantau}
+\mu \, \frac{d \Ilam}{d\tau} \;=\; \Ilam - \Jlam ,
+\end{align}
+which is the \emph{Schwarzschild equation}\index{Schwarzschild equation@Schwarzschild equation}.
+
+Attenuation (extinction) of electromagnetic radiation is the sum of true absorption and scattering,
+\begin{align}
+\mathrm{extinction} \;=\; \mathrm{absorption} + \mathrm{scattering} .
+\label{eq:extsa}
+\end{align}
+Processes such as photoionization (converting photon energy to ionization energy plus electron kinetic energy) or collisional de-excitation after radiative excitation (thermalizing the photon energy) contribute to absorption. Scattering includes elastic re-emission at the same frequency after excitation, as well as scattering by electrons and by atoms/molecules. Let the absorption and scattering contributions to the opacity be the \emph{true absorption coefficient} $\mu_a$ \index{true absorption coefficient@true absorption coefficient} and the \emph{scattering coefficient} $\mu_s$ \index{scattering coefficient@scattering coefficient}, respectively:
+\begin{align}
+\kappa_\nu = \mu_a + \mu_s .
+\label{eq:extsaa}
+\end{align}
+Then the emission coefficient can be written using the \emph{mean intensity}
+\begin{align}
+J_\nu \;\equiv\; \langle \Ilam \rangle \;=\; \frac{1}{4\pi} \int P(\Omega) \, \Ilam \, d\Omega ,
+\end{align}
+where $P(\Omega)$ is the scattering phase function, as
+\begin{align}
+\eta_\nu = \mu_a B_\nu + \mu_s J_\nu .
+\label{eq:emisaa}
+\end{align}
+Thus the source function becomes
+\begin{align}
+\Jlam \;=\; \frac{\mu_a B_\nu + \mu_s J_\nu}{\mu_a + \mu_s}
+          \;=\; (1-\omega_0) B_\nu + \omega_0 J_\nu ,
+\label{eq:sourcef}
+\end{align}
+where
+\begin{align}
+\omega_0 \equiv \frac{\mu_s}{\mu_a+\mu_s}
+\label{eq:sia}
+\end{align}
+is the \emph{single-scattering albedo}. In other words, with scattering the radiative transfer equation involves the source function
+\begin{align}
+\label{eq:rtscat}
+\Jlam \;=\; \omega_0 J_\nu + (1-\omega_0) B_\nu .
+\end{align}
+
+
+\section{Modeling Thermal Emission Spectra}
+
+Generating an emission spectrum requires solving the radiative transfer equation. When scattering can be neglected, the calculation becomes comparatively simple. In the pure–absorption case, the Schwarzschild equation can be integrated in closed form, allowing one to propagate the specific intensity layer by layer. The emergent flux is then obtained at the end by integrating the top–of–atmosphere (TOA) intensity over direction.
+
+Let $\tau$ be the vertical optical depth measured downward from the TOA. The Schwarzschild equation is
+\begin{align}
+    \mu \frac{d I_\nu}{d \tau} = I_\nu - \mathcal{J}_\nu ,
+\end{align}
+so, defining $\tau' \equiv \tau/\mu$ and viewing $I_\nu$ as a function of $\mu$, we have
+\begin{align}
+    \dot{I}_\nu(\mu) = I_\nu(\mu) - \mathcal{J}_\nu(\mu),
+\end{align}
+where the dot denotes differentiation with respect to $\tau'$. Multiplying by $e^{-\tau'}$ and integrating from $\tau'_A$ to $\tau'_B$ yields the formal solution
+\begin{align}
+     I_\nu (\tau_B'; \mu) \, e^{-\tau_B'} = I_\nu (\tau_A', \mu) \, e^{-\tau_A'} - \int_{\tau_A'}^{\tau_B'} \mathcal{J}_\nu(\mu) \, e^{-\tau'} \, d\tau' ,
+\end{align}
+the integral form of the Schwarzschild equation.
+
+Dropping the wavenumber subscript for brevity, and considering pure absorption ($\omega_0=0$), equation (\ref{eq:rtscat}) implies that $\mathcal{J}_\nu(\mu)$ reduces to the (angle–independent) Planck function $B_\nu$. Focusing only on outward–going intensity ($\mu \ge 0$), write $I(\tau,\mu)=I^+(\tau,\mu)$\footnote{In this convention one would define $I(\tau,\mu)=-I^-(\tau,\mu)$ for $\mu<0$.}. Choosing the optical–depth origin at the evaluation point ($\tau_B=0$) gives
+\begin{align}
+\label{eq:intensity_transfer}
+I^+(0;\mu) = I^+(\tau_A',\mu) \, e^{-\tau_A'} + \int_{0}^{\tau_A'} B_\nu(\tau)\, e^{-\tau'} \, d\tau' .
+\end{align}
+
+Setting $\tau_A=\tau_s$ (the bottom boundary) and introducing the transmission
+$\mathsf{T}(z;\mu) \equiv e^{-\tau(z)/\mu}$ (with $z=0$ at the bottom of the atmosphere), the monochromatic outward intensity can be written
+\begin{align}
+    I^+(\mu) &= B_\nu(T_s)\, \mathsf{T}(z=0;\mu) \;+\; \int_{0}^{\infty} B_\nu(T)\, \frac{d\mathsf{T}(z)}{dz}\, dz ,
+\end{align}
+where $T_s$ is the bottom temperature and $\tau_s'=\tau_s/\mu$.
+
+Discretizing in terms of the transmission $\mathsf{T}(z)$ gives
+\begin{align}
+\label{eq:I_discrete_nemesis}
+I^+(\mu) &= B_\nu(T_s)\, \mathsf{T}_{N_{\mathrm{layer}}-1}(\mu) \nonumber \\
+&\quad + \sum_{j=0}^{N_{\mathrm{layer}}-1} B_\nu(T_j)\,\bigl(\mathsf{T}_{j-1}(\mu) - \mathsf{T}_j(\mu)\bigr) ,
+\end{align}
+where, consistent with the definition $\mathsf{T}_j = \exp\!\left(-\sum_{i=0}^{j} \Delta\tau_i/\mu\right)$, one must precompute the cumulative transmission up to each layer $j$ to evaluate (\ref{eq:I_discrete_nemesis}).\footnote{Irwin et al.\ index layers from the bottom upward; here we index from the top downward.}
+
+Finally, integrate over angle to obtain the emergent flux at the TOA:
+\begin{align}
+    F^+(0) = 2\pi \int_{0}^{1} \mu \, I^+(\mu)\, d\mu .
+\end{align}
+This corresponds to an $N$–stream (discrete–ordinates) radiative calculation in the no–scattering limit; a direct extension to scattering media is not straightforward.

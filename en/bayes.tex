@@ -1,0 +1,169 @@
+\section{Bayes' theorem}
+
+Bayes' theorem describes the probability of observing an event $B$ under the condition that another event $A$ occurs. It is known as a fundamental relation concerning conditional probabilities.
+
+Expressed mathematically, Bayes' theorem is written as
+
+\[
+p(A \mid B) = \frac{p(B \mid A)\,p(A)}{p(B)}.
+\]
+
+Here,
+\begin{itemize}
+  \item $p(A \mid B)$ is the probability of $A$ occurring given that $B$ has occurred.
+  \item $p(B \mid A)$ is the probability of $B$ occurring given that $A$ has occurred.
+  \item $p(A)$ is the probability of $A$ occurring.
+  \item $p(B)$ is the probability of $B$ occurring.
+\end{itemize}
+
+Bayes' theorem is extremely useful when reasoning about probabilistic relationships in reverse. That is, it provides a way to update the probability of a candidate cause $A$ in light of an observed result $B$. In particular, in the fields of statistical inference and machine learning, it is widely used as the foundational theory for updating prior probabilities into posterior probabilities based on information obtained from observational data.
+
+The proof is as follows. From the definition of conditional probability,
+\[
+p(A \mid B) = \frac{p(A \cap B)}{p(B)}
+\]
+holds. On the other hand, from the definition of the conditional probability representing the probability of $B$ occurring given $A$,
+\[
+p(A \cap B) = p(B \mid A) p(A)
+\]
+is obtained. Substituting this into the above expression gives
+\[
+p(A \mid B) = \frac{p(B \mid A)\,p(A)}{p(B)}.
+\]
+
+In the context of inference in astronomy, we often let $A$ be the model parameters $\thetav$ to be estimated, and $B$ the observational data $\dv$. The posterior probability is then expressed as
+\[
+p(\thetav \mid \dv) = \frac{p(\dv \mid \thetav)\,p(\thetav)}{p(\dv)}.
+\]
+Here, $p(\dv \mid \thetav)$ is the likelihood, which already appeared in the context of point estimation, and $p(\thetav)$ is the prior distribution of the parameters. $p(\dv)$ is called the evidence; while it is required for model comparison, it does not depend on $\thetav$, and therefore need not be computed for parameter estimation.
+
+See an example to apply Bayes' theorem for the daily astronomical research in the cloumn.
+
+\begin{itembox}{Rare event search$^\ddagger$}
+\footnotesize
+
+Let us apply Bayes' theorem to everyday astronomical research. In astronomy, one often searches for rare events within a large volume of data. Let us generally call this a rare event search. Suppose we are developing some algorithm to detect rare events.
+The performance of the rare event detection algorithm is defined as follows.
+Sensitivity: the probability that the algorithm classifies a rare event as a rare event: $p(+|R) = a = 0.5$ \\
+Specificity: the probability that the algorithm classifies a non-rare event (hereafter referred to as garbage) as garbage: $p(-|\overline{R}) = b = 0.999$. Events: $R$ = rare event, $\overline{R}$ = garbage. Algorithm classification for the events: $+$ = algorithm classifies as rare event, $-$ = algorithm classifies as garbage. Now, let us compute the probability that something classified as a rare event is actually a rare event (here simply referred to as the detection probability) as a function of the rarity $x=p(R)$.
+\begin{align}
+    &f(x,a,b) \equiv p(R|+) = \frac{p(+|R) p(R)}{ p(+)} \nonumber \\ 
+    &= \frac{p(+|R) p(R)}{ p(+|R) p(R) + p(+|\overline{R}) p(\overline{R})} \nonumber \\
+    &= \frac{p(+|R) p(R)}{ p(+|R) p(R) + [ 1- p(-|\overline{R}) ] [1- p(R)]} \nonumber \\
+    &= \frac{a x }{a x + ( 1 - b ) (1 - x)} 
+\end{align}
+
+When the rarity is $x = 10^{-4}$, i.e., one rare event per 10,000 cases, the detection probability is $p(R|+) = f(10^{-4}, 0.5, 0.999) \sim 0.05$. In this case, should one try to improve the sensitivity of the algorithm, which is still only at 50\%, or should one try to further improve the already high specificity of 99.9\% to strengthen the rejection of garbage?
+Consider the case where efforts are made to increase sensitivity so that it becomes perfect, i.e., from $a=0.5$ to $a=1$. Then, the detection probability becomes $p(R|+) = f(10^{-4}, 1, 0.999) \sim 0.09$, which is about twice the original value, reaching 9\%. Next, if one improves the garbage rejection ability, raising the specificity from $b=0.999$ to $0.9999$, thus reducing false positives by a factor of 10, the detection probability becomes $p(R|+) = f(10^{-4}, 0.5, 0.9999) \sim 0.33$, rising to about one-third. This corresponds to the case where the event is extremely rare and the probability of misclassifying garbage as a rare event (i.e., $1-b$) is larger than the rarity, i.e., when $x \ll 1 - b$. In this case,
+\begin{align}
+    &f(x,a,b) = \frac{a x }{a x + ( 1 - b ) (1 - x)} \nonumber \\
+    &\approx \frac{a x }{a x + ( 1 - b )} = \frac{r}{ r + 1 } \sim r. 
+\end{align}
+where $r \equiv a x/(1 - b)$. Therefore, to increase the detection probability, it is usually more effective to reduce $1-b$ (i.e., to bring specificity closer to the rarity, or equivalently to align specificity with the garbage rate), rather than improving sensitivity, which is often already of order unity.
+\end{itembox}
+
+
+\begin{itembox}{(Aside) Characteristics of rare event search$^\ddagger$}
+\footnotesize
+
+%{\bf 1. Motivation mismatch problem}:\\
+In rare event searches, it is crucial to reduce $(1 - \text{specificity})$, i.e., the probability of misclassifying garbage as rare, to be as close as possible to the rarity $x$. This essentially means ``learn more about garbage'', which is opposite to the motivation. Typically, rare event searches are conducted by people interested in the rare events themselves, not in the garbage. However, the rarer the event, the less strict the event detection can be, and the more stringent the algorithm must be in garbage rejection.
+
+%{\bf 2. WD self-lensing -> BH self-lensing}: \\
+To find events that are 100 times rarer than those previously targeted in surveys, simply increasing the survey volume by a factor of 100 is not sufficient. One must also reduce the probability of misclassifying garbage as rare by a factor of 100. This may require improving the precision of the survey (in terms of garbage rejection) by a factor of 100 as well, especially if the original survey was only barely detecting the rare events.
+
+%{\bf 3. WD self-lensing Kepler -> TESS}:\\
+Even if the survey volume is increased 100-fold to target events of the same rarity, if $(1 - \text{specificity})$ (the probability of misclassifying garbage as rare) becomes worse by a factor of 100, then 100 times more events will not be detected. In such a case, the gain from the increased survey volume disappears. %This may explain why WD self-lensing has not yet been detected with TESS.
+\end{itembox}
+
+\section{Markov Chain Monte Carlo}
+
+In practice, even when the likelihood function and prior distribution are given, it is often difficult to analytically apply Bayes' theorem to obtain the posterior probability. The practical tool for connecting astronomical data with theoretical models is Markov Chain Monte Carlo (MCMC). MCMC is an algorithm that, given a likelihood function and prior distribution, produces Monte Carlo samples drawn from the posterior probability distribution.
+
+In the representative MCMC algorithm, the Random Metropolis–Hastings (MH) algorithm, one first sets an initial value ${\thetav}_0$, and then repeats the following procedure to converge to the stationary distribution of the posterior probability $p({\thetav}|{\bf d})$. The stationary chain then yields samples $\{{\thetav}_N,{\thetav}_{N+1},..., {\thetav}_{M}\}$ as realizations of the posterior probability.
+\begin{itemize}
+ \item (1) Let the $i$-th state be ${\thetav}_i$. From ${\thetav}_i$, randomly generate a candidate for the next sample, $\hat{\thetav}_{i+1}$ (denoted with a hat as it is only a candidate), according to some probability distribution $q(\hat{\thetav}_{i+1}|{\thetav}_i)$ (the proposal distribution). Here, $q$ can be any distribution.
+ \item (2) Accept $\hat{\thetav}_{i+1}$ with probability $r$. If accepted, then set ${\thetav}_{i+1}=\hat{\thetav}_{i+1}$.
+\end{itemize}
+
+Here,
+\begin{align}
+  \label{eq:rproposal}
+r({\thetav}_i,\hat{\thetav}_{i+1}) = \mathrm{min} \left[1, \frac{p(\hat{\thetav}_{i+1}|{\bf d}) q({\thetav}_i|\hat{\thetav}_{i+1})}{p({\thetav}_i|{\bf d}) q(\hat{\thetav}_{i+1}|{\thetav}_i)} \right]
+\end{align}
+which is called the Metropolis ratio. Since this discrete stochastic process depends only on the previous state, it is called a Markov chain, and the method is known as Markov Chain Monte Carlo (MCMC). Now, when evaluating the right-hand side of Eq.~(\ref{eq:rproposal}), Bayes' theorem is used. That is,
+\begin{align}
+  \label{eq:rpbayes}
+r({\thetav}_i,\hat{\thetav}_{i+1})  = \mathrm{min} \left[1, \frac{L(\hat{\thetav}_{i+1}) p(\hat{\bf p }_{i+1})}{L({\thetav}_{i}) p({\thetav}_{i})} \right]
+\end{align}
+shows that $r({\thetav}_i,\hat{\thetav}_{i+1})$ can be computed if the likelihood and prior distribution are specified. Here, we assume a symmetric proposal distribution, i.e., $q({\thetav}_i|\hat{\thetav}_{i+1})= q(\hat{\thetav}_{i+1}|{\thetav}_i)$, such as a Gaussian.
+
+Next, let us show that the above procedure leads to a stationary distribution, and that it corresponds to $p({\thetav}|{\bf d})$. Suppose that at step $i$, the state follows $p({\thetav}_i|{\bf d})$, and by the procedure, ${\thetav}_{i+1}$ is generated with probability $p({\thetav}_{i+1}|{\thetav}_{i})$. Then at step $i+1$, ${\thetav}_{i+1}$ follows
+\begin{align}
+p({\thetav}_{i+1}) = \int p({\thetav}_{i+1}|{\thetav}_{i}) p({\thetav}_i|{\bf d}) d {\thetav}_i .
+\end{align}
+For this to be stationary, $p({\thetav}_{i+1})$ must again equal $p({\thetav}_{i+1}|{\bf d})$. The necessary condition for this is the detailed balance condition:
+\begin{align}
+ p({\thetav}_{i+1}|{\thetav}_{i}) p({\thetav}_i|{\bf d}) = p({\thetav}_{i}|{\thetav}_{i+1}) p({\thetav}_{i+1}|{\bf d}) .
+\end{align}
+If detailed balance holds, then
+\begin{align}
+  p({\thetav}_{i+1}) &= \int p({\thetav}_{i+1}|{\thetav}_{i}) p({\thetav}_i|{\bf d}) d {\thetav}_i \nonumber \\
+  &= \int p({\thetav}_{i}|{\thetav}_{i+1}) p({\thetav}_{i+1}|{\bf d}) d {\thetav}_i = p({\thetav}_{i+1}|{\bf d}) .
+\end{align}
+
+Now, in the MH algorithm, the probability of generating ${\thetav}_{i+1}$ from ${\thetav}_i$ is
+\begin{align}
+p({\thetav}_{i+1}|{\thetav}_{i}) = r({\thetav}_i,{\thetav}_{i+1}) \, q({\thetav}_{i+1}|{\thetav}_i) ,
+\end{align}
+so that
+\begin{align}
+  &p({\thetav}_{i+1}|{\thetav}_{i}) p({\thetav}_i|{\bf d}) = r \, q({\thetav}_{i+1}|{\thetav}_i) p({\thetav}_i|{\bf d}) \nonumber \\
+  &= \mathrm{min} \left[1, \frac{p({\thetav}_{i+1}|{\bf d}) q({\thetav}_i|{\thetav}_{i+1})}{p({\thetav}_i|{\bf d}) q({\thetav}_{i+1}|{\thetav}_i)} \right] \, q({\thetav}_{i+1}|{\thetav}_i) p({\thetav}_i|{\bf d}) \nonumber \\
+  &= \mathrm{min} \left[q({\thetav}_{i+1}|{\thetav}_i) p({\thetav}_i|{\bf d}) , p({\thetav}_{i+1}|{\bf d}) q({\thetav}_i|{\thetav}_{i+1}) \right] \, \nonumber \\
+  &= \mathrm{min} \left[\frac{ p({\thetav}_i|{\bf d}) q({\thetav}_{i+1}|{\thetav}_i)}{p({\thetav}_{i+1}|{\bf d}) q({\thetav}_i|{\thetav}_{i+1})} , 1 \right] \, q({\thetav}_i|{\thetav}_{i+1}) p({\thetav}_{i+1}|{\bf d}) \nonumber \\
+  &=  r({\thetav}_{i+1},{\thetav}_i)  q({\thetav}_i|{\thetav}_{i+1}) p({\thetav}_{i+1}|{\bf d}) \nonumber \\
+  &= p({\thetav}_i|{\thetav}_{i+1}) p({\thetav}_{i+1}|{\bf d})
+\end{align}
+showing that detailed balance indeed holds. Note that although the procedure begins from some arbitrary initial state ${\thetav}_0$, the early part of the Markov chain depends on this initial condition and must be discarded from the analysis.
+
+\section{Hamiltonian Monte Carlo and Automatic Differentiation}
+
+The drawback of random MH is that, since it involves random moves determined by the proposal distribution, the rejection rate tends to become high in high dimensions. Hamiltonian Monte Carlo (HMC) is a method that introduces an auxiliary ``momentum'' variable $\pv$ corresponding to the target parameter $\thetav$, and reduces the rejection rate by exploiting Hamiltonian conservation. Here, the potential energy $U$ and kinetic energy $K$ are defined as
+\begin{align}
+    U(\thetav) &= - \log{p({\thetav}|\dv)} \\
+    K(\pv) &= \frac{1}{2} \pv^\top M \pv
+\end{align}
+where $M$ is a positive-definite matrix called the mass matrix. The Hamiltonian is then defined as
+\begin{align}
+    H(\thetav, \pv) &\equiv U(\thetav) + K(\pv)
+\end{align}
+and the joint probability distribution as
+\begin{align}
+    p({\thetav}, \pv|\dv) &= e^{-H(\thetav, \pv)} = p({\thetav}|\dv) p(\pv) \\
+    p(\pv) &= \exp{\left( -\frac{1}{2} \pv^\top M \pv \right)}
+\end{align}
+That is, the mass matrix corresponds to the inverse of the Gaussian covariance, $M = \Sigma^{-1}$.
+If $(\thetav, \pv)$ follow Hamilton's equations, the Hamiltonian is conserved over time, i.e.,
+\begin{align}
+    \dot{\thetav} &= \frac{\partial H(\thetav, \pv)}{\partial \pv} = \frac{\partial K(\pv)}{\partial \pv} \\
+     \dot{\pv} &= - \frac{\partial H(\thetav, \pv)}{\partial \thetav} = - \frac{\partial U(\thetav)}{\partial \thetav}
+\end{align}
+then
+\begin{align}
+ \dot{H} &= \sum_{i=1}^D \left[\frac{\partial H(\thetav, \pv)}{\partial p_i} \dot{p_i} + \frac{\partial H(\thetav, \pv)}{\partial q_i} \dot{q_i} \right] \\
+ &= \frac{\partial H(\thetav, \pv)}{\partial \thetav} \dot{\thetav} + \frac{\partial H(\thetav, \pv)}{\partial \pv} \dot{\pv} = 0
+\end{align}
+holds.
+
+Now, the acceptance rate of the Metropolis–Hastings algorithm (\ref{eq:rproposal}) is given by
+\begin{align}
+r({\thetav}_i,\hat{\thetav}_{i+1}) &= \mathrm{min} \left[1, \frac{p(\hat{\thetav}_{i+1},\hat{\pv}_{i+1}|{\bf d}) }{p({\thetav}_{i},{\pv}_{i}|{\bf d}) } \right] \\
+ &= \mathrm{min} \left[1, e^{H({\thetav}_{i},{\pv}_{i}) - H(\hat{\thetav}_{i+1},\hat{\pv}_{i+1})}  \right]
+\end{align}
+In other words, if the dynamical calculations are carried out with sufficient accuracy and the Hamiltonian is nearly conserved, the acceptance rate becomes nearly 1.
+Finally, note that once we sample from $p(\thetav, \pv|\dv)$, marginalizing over $\pv$ yields samples from $p(\thetav|\dv)$.
+
+Although we do not provide a detailed explanation here, the dynamical evolution is computed using the leapfrog scheme. In this step, the gradient of $U(\thetav)$ with respect to $\thetav$ is required. This, in turn, requires the derivative of the likelihood $p(\dv|\thetav)$ with respect to $\thetav$. Since the likelihood function contains the forward model, ultimately the derivative of the model with respect to $\thetav$ is required. That is, HMC requires gradient computation of the model.
+
+Numerical differentiation is generally unsuitable because errors accumulate. While hand-derived gradients may be provided, in the case of complex models, automatic differentiation is often used for flexibility. In other words, to perform HMC it is crucial to construct the model within a differentiable programming framework.

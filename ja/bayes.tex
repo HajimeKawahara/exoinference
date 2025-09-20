@@ -1,0 +1,184 @@
+\section{ベイズの定理}
+
+ベイズの定理（Bayes' theorem）とは、事象 $A$ が起こる条件のもとで、別の事象 $B$ が観測される確率を示す定理である。これは条件付き確率に関する基本的な関係式として知られている。
+
+ベイズの定理を数式で表すと、以下のようになるのである。
+
+\[
+p(A \mid B) = \frac{p(B \mid A)\,p(A)}{p(B)}.
+\]
+
+ここで、
+\begin{itemize}
+  \item $p(A \mid B)$ は「$B$ が起きたときに $A$ が起こる確率」である。
+  \item $p(B \mid A)$ は「$A$ が起こったときに $B$ が起こる確率」である。
+  \item $p(A)$ は「$A$ が起こる確率」である。
+  \item $p(B)$ は「$B$ が起こる確率」である。
+\end{itemize}
+
+ベイズの定理は、事象の背後にある確率的関係を逆方向から考察する際に極めて有用である。すなわち、ある観測結果 $B$ から原因候補 $A$ の確率を更新する方法を示してくれる。特に統計的推測や機械学習の分野において、事前確率（prior probability）を観測データから得られる情報によって事後確率（posterior probability）へと更新する根幹となる理論として広く用いられる。
+
+証明は以下のとおりである。
+まず、条件付き確率の定義から、
+\[
+p(A \mid B) = \frac{p(A \cap B)}{p(B)}
+\]
+が成り立つ。一方、$A$ が起きたときに $B$ が起こる確率を示す条件付き確率の定義より、
+\[
+p(A \cap B) = p(B \mid A) p(A)
+\]
+となる。これを上式に代入すれば、
+\[
+p(A \mid B) = \frac{p(B \mid A)\,p(A)}{p(B)}
+\]
+が得られる。
+
+天文学の推定のコンテクストでは、$A$をモデルの内の推定するパラメタ$\thetav$で、$B$を観測データ$\dv$とおくことで事後確率を
+\[
+p(\thetav \mid \dv) = \frac{p(\dv \mid \thetav)\,p(\thetav)}{p(\dv)}.
+\]
+と表して用いることが多い。すなわち$p(\dv \mid \thetav)$は点推定の時にも表れた尤度であり、$p(\thetav)$はパラメタの事前分布である。$p(\dv)$はEvidenceと呼ばれる量であり、モデル間比較の時には必要になるものの、$\thetav$に依存しないため、パラメタ推定の時には計算の必要がない。
+
+
+
+\begin{itembox}{レアイベント探査$^\ddagger$}
+\footnotesize
+
+ベイズの定理を日々の天文学研究に応用してみよう。天文学では大量のデータからレアなイベントを探すことが行われる。これを一般にレアイベント探査とよぼう。今、レアイベントを検出する何らかのアルゴリズムを開発しているとする。
+
+レアイベント検出アルゴリズムの性能を\\
+感度：レアイベントを、アルゴリズムがレアイベントを検出したと判定する確率：$p(+|R) = a = 0.5$ \\
+特異度：非レアイベント（以降、ゴミと略記)を、アルゴリズムがゴミと判定する確率：$p(-|\overline{R}) = b = 0.999$ \\
+事象： $R$=レアイベント、$\overline{R}$= ゴミ\\
+事象に対するアルゴリズムの判定：$+$ = アルゴリズムがレアイベントと判定、$-$ = アルゴリズムがゴミと判定\\
+とする。
+
+ここからレアイベント判定されたものが、実際にレアイベントである確率(ここでは簡単に検出確率とよぼう)をレア度 $x=p(R)$の関数として求めてみよう。
+
+\begin{align}
+    &f(x,a,b) \equiv p(R|+) = \frac{p(+|R) p(R)}{ p(+)} \nonumber \\ 
+    &= \frac{p(+|R) p(R)}{ p(+|R) p(R) + p(+|\overline{R}) p(\overline{R})} \nonumber \\
+    &= \frac{p(+|R) p(R)}{ p(+|R) p(R) + [ 1- p(-|\overline{R}) ] [1- p(R)]} \nonumber \\
+    &= \frac{a x }{a x + ( 1 - b ) (1 - x)} 
+\end{align}
+
+レア度が$x = 10^{-4}$のとき、つまりレアイベントが10,000個に1個の場合、検出確率は$p(R|+) = f(10^{-4}, 0.5, 0.999) \sim 0.05$である。この時、まだ50\%しかないアルゴリズムの感度を上げる努力をすべきか、それともすでに99.9\%もあるアルゴリズムの特異度をさらに上げて、ゴミ判定力を強化すべきか？
+
+感度をあげる努力をして、半分しかなかった感度が完璧にレアイベントを検出できるもの、すなわち$a=0.5$から$a=1$になった場合を考える。このとき検出確率は$p(R|+) = f(10^{-4}, 1, 0.999) \sim 0.09$となる。元の２倍程度、9\%の検出確率である。
+
+次にゴミ判定力を向上させ、特異度を$b=0.999$から$0.9999$とし、10倍ゴミを排除できるようにした場合の検出確率は$p(R|+) = f(10^{-4}, 0.5, 0.9999) \sim 0.33$となり、検出確率は1/3くらいにまで上昇する。
+
+これは、イベントが非常にレアで、1 - 特異度（ゴミをレアと誤判定してしまう確率がレア度より大きい場合、つまり$x \ll 1 - b$の場合に対応し、この場合、
+\begin{align}
+    &f(x,a,b) = \frac{a x }{a x + ( 1 - b ) (1 - x)} \nonumber \\
+    &\approx \frac{a x }{a x + ( 1 - b )} = \frac{r}{ r + 1 } \sim r \\
+    &r \equiv \frac{a x}{1 - b}
+\end{align}
+となっているので、検出確率を上げるには、通常は既にオーダー1となっている感度ではなく、1 - 特異度をレア度（もしくは特異度をゴミ度）に近づける努力のほうが有効である、ということになる。
+\end{itembox}
+
+\footnote{(つぶやき) レアイベント探査の特性
+
+%{\bf 1. モチベーション不一致問題}：\\
+レアイベント探査では(1 - 特異度)、つまり、ゴミをレアと誤判定してしまう確率を、レア確率$x$になるべく近づける努力が重要である。これはゴミについて知れ、という意味であり、モチベーションと相反する。通常、レアイベント探査はレアイベントに興味がある人が行うのであり、ゴミに興味がある人が行うのではない。しかしレアであればあるほど、イベント検出の部分は適当でよくなり、ゴミ判定についてよりシビアなアルゴリズムを作らないとならない。
+
+%{\bf 2. WD self-lensing -> BH self-lensing}: \\
+これまでのサーベイで探索していたレア度のものの100倍レアなものを見つけるためには、100倍のサーベイボリュームにするだけでは不十分である。ゴミをレアと誤判定してしまう確率も1/100にしなければならず、そのためにはサーベイの精度（ゴミの意味での精度）も100倍良くしないとならないかもしれない（元のサーベイのレアイベントがギリギリ見つかっていた場合）。
+
+%{\bf 3. WD self-lensing Kepler -> TESS}:\\
+また同じレア度のものをサーベイボリュームを100倍にしても、1 - 特異度（ゴミをレアと誤判定してしまう確率）が上がってしまうと100倍の数は見つからない。データの問題で1 - 特異度が100倍悪くなってしまうと、サーベイボリュームの増加によるゲインはなくなる。%これがおそらくTESSでWD self-lensingがいまだみつからない理由かもしれない。
+}
+
+\section{マルコフ鎖モンテカルロ}
+
+実際には、尤度関数と事前分布が与えられた場合であっても、解析的にベイズの定理を適用して事後確率を求めることは困難である。
+天文学データと理論モデルを結び付けるための実際の道具がマルコフ鎖モンテカルロ(MCMC)である。 MCMCは、尤度関数・事前分布が与えられた時に、そこから計算される事後確率分布から抽出したサンプリングをモンテカルロ法的に得るアルゴリズムである。
+
+代表的なMCMCのアルゴリズムであるRandom Metropolis-Hasting (MH) algorithmでは、まず初期値として${\thetav}_0$をセットした後に、以下の手続きを繰り返すことで、事後確率$p({\thetav}|{\bf d})$の定常過程に収束させる。そして事後確率の実現値として、この定常過程から$\{{\thetav}_N,{\thetav}_{N+1},..., {\thetav}_{M}\}$がサンプリングされる。
+\begin{itemize}
+ \item (1) $i$-番目の値を${\thetav}_i$とする。${\thetav}_i$から、次のサンプリングの候補$\hat{\thetav}_{i+1}$ (まだ候補なのでハットをつけている)をある確率分布$q(\hat{\thetav}_{i+1}|{\thetav}_i)$ (提案分布)に従うようにランダムに生成する。ここに$q$はどんな分布でも良い。
+ \item (2) 確率$r$で$\hat{\thetav}_{i+1}$をacceptする。その場合、${\thetav}_{i+1}=\hat{\thetav}_{i+1}$となる。
+\end{itemize}
+ここに
+\begin{align}
+  \label{eq:rproposal}
+r({\thetav}_i,\hat{\thetav}_{i+1}) = \mathrm{min} \left[1, \frac{p(\hat{\thetav}_{i+1}|{\bf d}) q({\thetav}_i|\hat{\thetav}_{i+1})}{p({\thetav}_i|{\bf d}) q(\hat{\thetav}_{i+1}|{\thetav}_i)} \right]
+\end{align}
+であり、この値をMetropolis ratioと呼ぶ。このように次の確率が一つ前の結果だけに依存する離散的な確率過程をMarkov chainとよぶため、これらの手法はMarkov Chain Monte Carlo (MCMC)と呼ばれる。さて、式(\ref{eq:rproposal})の右辺の中を計算するときにベイズの定理を用いる。すなわち
+\begin{align}
+  \label{eq:rpbayes}
+r({\thetav}_i,\hat{\thetav}_{i+1})  = \mathrm{min} \left[1, \frac{L(\hat{\thetav}_{i+1}) p(\hat{\bf p }_{i+1})}{L({\thetav}_{i}) p({\thetav}_{i})} \right]
+\end{align}
+のように尤度と事前分布を与えれば$r({\thetav}_i,\hat{\thetav}_{i+1})$を計算できることがわかる。ただしここで提案分布は対称、すなわち$q({\thetav}_i|\hat{\thetav}_{i+1})= q(\hat{\thetav}_{i+1}|{\thetav}_i) $となるもの、例えばガウシアンなど、を選んだとしている。
+
+さて上の手続きで定常分布が成り立ち、かつそれが$p({\thetav}|{\bf d})$となることを示そう。$i$番目で$p({\thetav}_i|{\bf d})$に従っているとして、その確率分布が、手続きにより確率$p({\thetav}_{i+1}|{\thetav}_{i})$で${\thetav}_{i+1}$を生成するとき、$i+1$番目で${\thetav}_{i+1}$は
+\begin{align}
+p({\thetav}_{i+1}) = \int p({\thetav}_{i+1}|{\thetav}_{i}) p({\thetav}_i|{\bf d}) d {\thetav}_i
+\end{align}
+の確率に従うであろう。定常分布であるためにはこの$p({\thetav}_{i+1})$が再び$p({\thetav}_{i+1}|{\bf d})$と一致すれば良い。このために必要な条件が詳細釣り合い条件
+\begin{align}
+ p({\thetav}_{i+1}|{\thetav}_{i}) p({\thetav}_i|{\bf d}) = p({\thetav}_{i}|{\thetav}_{i+1}) p({\thetav}_{i+1}|{\bf d}) 
+\end{align}
+である。詳細釣り合いが成り立てば、
+\begin{align}
+  p({\thetav}_{i+1}) &= \int p({\thetav}_{i+1}|{\thetav}_{i}) p({\thetav}_i|{\bf d}) d {\thetav}_i \nonumber \\
+  &= \int p({\thetav}_{i}|{\thetav}_{i+1}) p({\thetav}_{i+1}|{\bf d}) d {\thetav}_i = p({\thetav}_{i+1}|{\bf d})
+\end{align}
+となる。
+
+さて、MH algorithmでは${\thetav}_i$から${\thetav}_{i+1}$が生成される確率は
+\begin{align}
+p({\thetav}_{i+1}|{\thetav}_{i}) = r({\thetav}_i,{\thetav}_{i+1}) \, q({\thetav}_{i+1}|{\thetav}_i)
+\end{align}
+であるため、
+\begin{align}
+  &p({\thetav}_{i+1}|{\thetav}_{i}) p({\thetav}_i|{\bf d}) = r \, q({\thetav}_{i+1}|{\thetav}_i) p({\thetav}_i|{\bf d}) \nonumber \\
+  &= \mathrm{min} \left[1, \frac{p({\thetav}_{i+1}|{\bf d}) q({\thetav}_i|{\thetav}_{i+1})}{p({\thetav}_i|{\bf d}) q({\thetav}_{i+1}|{\thetav}_i)} \right] \, q({\thetav}_{i+1}|{\thetav}_i) p({\thetav}_i|{\bf d}) \nonumber \\
+  &= \mathrm{min} \left[q({\thetav}_{i+1}|{\thetav}_i) p({\thetav}_i|{\bf d}) , p({\thetav}_{i+1}|{\bf d}) q({\thetav}_i|{\thetav}_{i+1}) \right] \, \nonumber \\
+  &= \mathrm{min} \left[\frac{ p({\thetav}_i|{\bf d}) q({\thetav}_{i+1}|{\thetav}_i)}{p({\thetav}_{i+1}|{\bf d}) q({\thetav}_i|{\thetav}_{i+1})} , 1 \right] \, q({\thetav}_i|{\thetav}_{i+1}) p({\thetav}_{i+1}|{\bf d}) \nonumber \\
+  &=  r({\thetav}_{i+1},{\thetav}_i)  q({\thetav}_i|{\thetav}_{i+1}) p({\thetav}_{i+1}|{\bf d}) \nonumber \\
+  &= p({\thetav}_i|{\thetav}_{i+1}) p({\thetav}_{i+1}|{\bf d})
+\end{align}
+となり、たしかに詳細釣り合いが成り立っていることが確かめられる。ただし、初期条件として適当な${\thetav}_0$から始めるが、Markov chainの最初の部分は初期条件に依存しているので解析から除くことが必要である。
+
+\section{ハミルトニアン・モンテカルロと自動微分}
+
+random MHの問題点は提案分布によるランダムな移動を伴うため、高次元で棄却率が高くなってしまう点である。ハミルトニアンモンテカルロ(HMC)は、求めたいパラメタ$\thetav$に対し、対応する``運動量''$\pv$を導入し、ハミルトニアン保存を利用して棄却率を下げる手法である。ここでポテンシャルエネルギー$U$と運動エネルギー$K$を
+\begin{align}
+    U(\thetav) &= - \log{p({\thetav}|\dv)} \\
+    K(\pv) &= \frac{1}{2} \pv^\top M \pv
+\end{align}
+とする。ここに$M$はmass matrixとよばれる正定値行列である。ハミルトニアンを
+\begin{align}
+    H(\thetav, \pv) &\equiv U(\thetav) + K(\pv)
+\end{align}
+と定義し、同時確率分布を
+\begin{align}
+    p({\thetav}, \pv|\dv) &= e^{-H(\thetav, \pv)} = p({\thetav}|\dv) p(\pv) \\
+    p(\pv) &= \exp{\left( -\frac{1}{2} \pv^\top M \pv \right)}
+\end{align}
+とする。つまりmass matrixはガウシアンの共分散の逆数$M = \Sigma^{-1}$であることになる。
+$(\thetav, \pv)$がハミルトン方程式に従うとすると、ハミルトニアンは時間保存量となる。すなわち
+\begin{align}
+    \dot{\thetav} &= \frac{\partial H(\thetav, \pv)}{\partial \pv} = \frac{\partial K(\pv)}{\partial \pv} \\
+     \dot{\pv} &= - \frac{\partial H(\thetav, \pv)}{\partial \thetav} = - \frac{\partial U(\thetav)}{\partial \thetav}
+\end{align}
+ならば、
+\begin{align}
+ \dot{H} &= \sum_{i=1}^D \left[\frac{\partial H(\thetav, \pv)}{\partial p_i} \dot{p_i} + \frac{\partial H(\thetav, \pv)}{\partial q_i} \dot{q_i} \right] \\
+ &= \frac{\partial H(\thetav, \pv)}{\partial \thetav} \dot{\thetav} + \frac{\partial H(\thetav, \pv)}{\partial \pv} \dot{\pv} = 0
+\end{align}
+となる。
+
+さてここでメトロポリス・ヘイスティングの受容率(\ref{eq:rproposal})は
+\begin{align}
+r({\thetav}_i,\hat{\thetav}_{i+1}) &= \mathrm{min} \left[1, \frac{p(\hat{\thetav}_{i+1},\hat{\pv}_{i+1}|{\bf d}) }{p({\thetav}_{i},{\pv}_{i}|{\bf d}) } \right] \\
+ &= \mathrm{min} \left[1, e^{H({\thetav}_{i},{\pv}_{i}) - H(\hat{\thetav}_{i+1},\hat{\pv}_{i+1})}  \right]
+\end{align}
+となる。つまり力学計算を精度良く行い、ハミルトニアンがほぼ保存すれば、受容率はほぼ1となる。
+最終的に$p(\thetav, \pv|\dv)$のサンプリングが行われれば、$\pv$について周辺化すれば $p(\thetav|\dv)$のサンプリングが得られることに注意する。
+
+詳しく解説はしないが、力学計算はLeap-frogを用いて行う。この際、$U(\thetav)$の$\thetav$による勾配が必要である。これは尤度$p(\dv|\thetav)$の$\thetav$微分が必要である。尤度関数の中にモデルが含まれることから、最終的にモデルの$\thetav$が必要であることがわかる。すなわち、HMCにはモデルの勾配計算が必要である。
+
+数値微分は誤差が蓄積するため、通常、不適である。また手計算で微分を与えてもよいが、複雑なモデルの場合、フレキシビリティの観点からも自動微分が用いられることが多い。つまりHMCを行うためには微分可能プログラミングでモデルを構築することが肝要である。
+

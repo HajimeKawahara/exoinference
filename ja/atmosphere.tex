@@ -1,0 +1,163 @@
+\section{重力と惑星大気}
+惑星大気は、惑星の重力により惑星表面に束縛されている。すなわち重力が大気構造の大まかな構造をあたえる。大気構造に以下の仮定をおいて簡単化し、大気構造と重力の関係を見る。
+\begin{itemize}
+    \item 大気層は薄く平衡平板で近似できる
+    \item 大気は等温
+    \item 大気は理想気体としてふるまう
+    \item 大気の鉛直方向の運動はなく、重力と圧力が釣り合っている
+\end{itemize}
+ここから、大気の重要な長さスケールであるスケールハイトが導入される。
+
+\subsection*{理想気体の状態方程式 \label{ss:idealgass}}
+単一成分の理想気体の状態方程式は、圧力$P$、温度$T$、気体数密度$n [\mathrm{cm^{-3}}]$を用いて
+\begin{eqnarray}
+\label{eq:ideal}
+P = n k_B T
+\end{eqnarray}
+となる。アボガドロ数$N_A=6.0221367 \times 10^{23}$を利用して
+\begin{eqnarray}
+\label{eq:idealRastmol}
+P &=& R^\prime n^\prime T 
+\end{eqnarray}
+とも書ける。ここに$R^\prime = N_A k_B = 8.3144598 \times 10^7 [\mathrm{erg/K/mol}]$ はuniversal gas constant\index{universal gas constant@universal gas constant}である。ここに$n^\prime$はモル数密度$[\mathrm{mol \, cm^{-3}}]$である。式(\ref{eq:ideal})を気体密度$\rho = \mu m_H n \,\,[\mathrm{g \, cm^{-3}}]$ ($\mu$は分子量、$m_H$はproton mass)であらわすと、
+\begin{eqnarray}
+\label{eq:idealRast}
+P &=& \frac{k_B}{\mu m_H} \rho T \\
+\end{eqnarray}
+となる。 specific gas constant $R \,\,[\mathrm{erg/g/K}]$を用いてかくと
+\begin{eqnarray}
+\label{eq:idealR}
+P &=& R \rho T \\
+R &\equiv& \frac{k_B}{\mu m_H}
+\end{eqnarray}
+となる。以上のように$R^\prime$を用いてモル数密度で考えているのか、$k_B$もしくは$R$を用いて、通常の密度・数密度で考えているのか区別する必要がある。本稿では宇宙分野の表記との一貫性を保つため、原則は通常の密度・数密度で考える。しかし、気象学の分野では数密度のmol表記が一般的であり、比較の際や文献値を使用する際には表記の違いに注意が必要である。
+
+
+
+\subsection*{等温・静水圧平衡 \label{ss:atmscal}}
+
+惑星の地表においた薄い大気層においては重力加速度
+\begin{eqnarray}
+g = - \frac{d \phi}{d r} = \frac{G M_p}{r^2}
+\end{eqnarray}
+($\phi=G M_p/r$は重力ポテンシャル)を$r$に寄らず一定と近似することができる。この条件下で静水圧平衡
+\begin{eqnarray}
+\label{eq:pressureeq}
+\frac{d P(r)}{d r}  = \rho \frac{d \phi}{d r} =  - \rho g 
+\end{eqnarray}
+に、状態方程式(\ref{eq:idealRast})を用いると微分方程式
+\begin{eqnarray}
+\frac{d P}{d r} = - \frac{P}{H} 
+\end{eqnarray}
+の形となり解は
+\begin{eqnarray}
+\label{eq:pusi}
+P(r) = P_0 \exp{\left( -\frac{r-r_0}{H} \right) } \equiv P_\mathrm{thin} (r)
+\end{eqnarray}
+となる。$r_0$での圧力を$P_0$として境界条件とした。ここに
+\begin{align}
+  \label{eq:scale_height}
+H &\equiv \frac{k_B T}{\mu m_H g} \\
+&\approx 8.4 \,\, \mathrm{km} \left( \frac{T}{300 \,\, \mathrm{K}} \right)  \left( \frac{\mu}{30} \right)^{-1} \left( \frac{g}{980 \,\, \mathrm{cm/s^2}} \right)^{-1}
+\end{align}
+は(圧力)スケールハイトとよばれる。つまり、熱エネルギーと重力の比で大気の典型的な高さが決まる単純な描像が得られる。長さの次元を持つ大気の高さには熱エネルギー、すなわち温度情報が必要であることがわかる。
+
+式(\ref{eq:scale_height})から、例えば、温度の高い惑星のほうが大気の高さがあるため観測しやすいことなどがわかる。岩石惑星の場合、密度がほとんど半径によらないため、$H$は半径に反比例する。すなわち半径が二倍地球半径のスーパー・アースは、半径は二倍になるが大気の厚さは半分になるため、透過光分光による大気キャラクタリゼーションの難しさはあまり変わらない。また、式(\ref{eq:pusi})から、ある$r > r_0$の$r_0$からの高さを圧力から求めるには、
+\begin{eqnarray}
+\Delta r = (r - r_0) = H \log{\left(\frac{P_0}{P(r)}\right)}  
+\end{eqnarray}
+となる。
+
+また大気中で等温とみなせる薄い一層を考え、そのレイヤーの高さ幅を$d z (> 0)$、圧力単位での幅を$d P (>0)$とすると、式(\ref{eq:scale_height})から
+\begin{eqnarray}
+\label{eq:conversion_z_P}
+\frac{d P}{P} = \frac{d z}{H} 
+\end{eqnarray}
+と書ける。このようにスケールハイトで規格化された高さの変化が圧力の相対変化と一致する。改めて書くほどではないが、式(\ref{eq:pressureeq})から高さ座標と圧力座標の変換は
+\begin{eqnarray}
+\label{eq:pressureeq_}
+d z = \frac{d P}{\rho g}
+\end{eqnarray}
+である。
+
+\section{大気と分子存在量}
+
+前節では等温であるとしたが、一般には大気は等温ではない。大気の高さを長さの次元で考えるためには、上で見たように温度情報が必要であるが、これが等温でない場合、複雑になってしまう。そこで大気の高さを長さの次元ではなく、圧力で代用する方法が良く用いられる。この場合、温度の鉛直構造は縦軸圧力・横軸温度であらわされるが、圧力軸は鉛直方向を示すためが逆転させることが多い。
+
+
+また大気からの放射や透過・反射を考える場合、光学的厚さと圧力を変換する必要がある。式(\ref{eq:pressureeq})より、
+\begin{eqnarray}
+\label{eq:drdp}
+d r = - \frac{d P}{\rho g} 
+\end{eqnarray}
+であるから、断面積を$\sigma$とした光学的厚さの微分形は
+\begin{eqnarray}
+d \tau = - n \sigma d r = \frac{\sigma}{\mu m_H g} d P  
+\end{eqnarray}
+と表される。ただし符号は$\tau$をどちらから測るかに依存する。今は、$r \to \infty$を$\tau \to 0$と定義している。この表記でも陽に温度にはよらないことに注意。ただし、一般的に断面積は温度・圧力に依存する。またガス組成の鉛直分布依存に対応して平均分子量も厳密には圧力に依存する、すなわち
+\begin{eqnarray}
+\label{eq:dtaudP}
+d \tau = \frac{\sigma(T,P)}{\mu (P) m_H g} d P  
+\end{eqnarray}
+である。ただし、ここでは薄い大気を考えているので$g$は圧力によらないことに注意。\\
+
+\subsection*{多成分系}
+
+大気が多成分系からなる場合はどうだろうか？ $m_H$をプロトン質量とすると、第$i$成分の分圧は
+\begin{eqnarray}
+\label{eq:idealRpa}
+P_i &=& k_B n_i T = R \rho_i T 
+\end{eqnarray}
+である。今、密度と数密度の関係は
+\begin{eqnarray}
+\label{eq:rhon}
+\rho &=& \sum_{i=1}^N \rho_i = m_H \sum_{i=1}^N \mu_i n_i  \\
+&=& m_H \left( \sum_{i=1}^N \mu_i \frac{ n_i}{n} \right) n = m_H \, \mu \,n \\
+\label{eq:moc}
+\mu &\equiv& \sum_{i=1}^N \xi_i \mu_i 
+\end{eqnarray}
+と表せる。ここに総数密度$n= \sum_{i=1}^N n_i$を定義した。また$\mu$は平均分子量であり、$\xi_i = n_i/n$は体積混合率(Volume Mixing Ratio; VMR) 
+\index{たいせきこんごうひ@体積混合比}
+と呼ばれる量である。体積混合比は分圧と
+\begin{eqnarray}
+\label{eq:partial_pressure}
+    P_i = \xi_i P
+\end{eqnarray}
+の関係がある\footnote{体積混合比は、ガスの気体分子全体の数に対する分子Aの数の割合であり、なぜこの量を体積混合比と呼び、数混合比と呼ばないのかは不明である。}。また式(\ref{eq:moc})の両辺を$\mu$で割ることにより
+\begin{align}
+    1 &=  \sum_{i=1}^N X_i \\
+    \label{eq:mmr_vmr}
+    X_i &=  \frac{\mu_i}{\mu} \xi_i \\
+    & = \frac{\rho_i}{\rho}
+\end{align}
+となる。$X_i$は、全ガスに占める分子$i$の質量の割合を示し、質量混合比(Mass Mixing Ratio; MMR)\index{しつりょうこんごうひ@質量混合比}と呼ばれる。
+
+密度表記の状態方程式は平均分子量$\mu$を用いて
+\begin{eqnarray}
+\label{eq:idealRpat}
+P &=&  \sum_{i=1}^N P_i = k_B n T = R \rho T  \\
+R &\equiv& \frac{k_B}{\mu m_H}
+\end{eqnarray}
+と一成分系のように扱える。\\
+
+
+\subsection*{分子存在量推定と基本縮退}
+
+分子多成分系の場合、第$i$成分のopacityは、式(\ref{eq:partial_pressure})、式(\ref{eq:mmr_vmr})より
+\begin{align}
+d \tau_i &= - n_i \sigma_i d r = \frac{\sigma_i}{\mu m_H g} d P_i \\
+&= \frac{\xi_i \sigma_i}{\mu m_H g} d P  \\
+\label{eq:MMR_dP_dtau}
+&= \frac{X_i \sigma_i}{\mu_i m_H g} d P 
+\end{align}
+となる。
+
+ここで式(\ref{eq:MMR_dP_dtau})をよく見ると、$\sigma_i, \mu_i, m_H$は大気とは無関係に物理化学的に決まる量であるが、$X_i$と$g$は系に固有の量であり、観測の観点からは推定量である。しかし$d \tau_i$は$X_i/g$にのみ依存しているため、これを同時に決めることはできない。分子だけでオパシティが決まる場合の総光学的厚さは、線形和
+\begin{align}
+\label{eq:mol}
+    d \tau = - \sum_{i=1}^N n_i \sigma_i dr = \sum_{i=1}^N d \tau_i
+\end{align}
+となっていることから、結局、スペクトルから推定できるのは、分子存在量ではなく、質量混合比を重力で割った$X_i/g$のみである。これを我々は{\bf 基本縮退}と呼んでいる。
+
+
+トランジット系の場合、RVとトランジット半径から$g$が決まるため、基本縮退は解けるの問題はない。直接撮像惑星や褐色矮星の直接分光のような放射光のみの場合、photosphereが分子吸収しか見えない場合、基本縮退は解けない。しかし水素分子等による連続吸収が見える場合は基本縮退が解けるようになる\cite{2025ApJ...988...53K}。

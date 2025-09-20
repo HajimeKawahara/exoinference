@@ -1,0 +1,131 @@
+\section{Schwarzschild 方程式$^\ast$}
+ある角度({\bf n})方向に、ある波数幅$d \nu$の間の光が微小面積($d S$、法線方向を${\bf k}$とする)・微小時間、微小立体角$d \Omega$内に伝達するエネルギーを$d {\mathcal{E}_\nu}$とすると、specific intensity $\Ilam$は以下のように表現される
+\begin{align}
+d {\mathcal{E}_\nu} = \Ilam ({\bf n} \cdot {\bf k})  d S d \Omega d \nu d t .
+\end{align}
+
+微小円柱に入射した光は$\Ilam$に比例して散乱・吸収する。比例定数をextinction coefficient (減光の係数という意味) \index{extinction coefficient@extinction coefficient} $\kappa_\nu$ という。ところで{\bf opacity}\index{opacity@opacity}という語は様々な定義で使われるが、この$[cm^2/g]$の次元を持つextinction coefficientをopacityと呼ぶことにする。また、今の意味ではopacityは単一周波数$\nu$に対して定義されているので厳密にはmonochromatic opacityである。何らかの周波数平均をした代表的なextinction coefficientもopacityと呼ぶ。このopacityを用いると、微小円柱内からの射出がない場合、単位時間内に吸収・散乱されるエネルギーは、微小距離$ds$、密度$\rho$を用いて、
+\begin{align}
+- \kappa_\nu \Ilam \rho d s d \Omega d \nu d t = d \Ilam d \Omega d \nu d t
+\end{align}
+となるので、
+\begin{align}
+d \Ilam = - \kappa_\nu \Ilam \rho d s
+\end{align}
+となる。微小円柱内からの射出放射輝度はemission coefficient \index{emission coefficient@emission coefficient} $\eta_\nu$を用いて
+\begin{align}
+d \Ilam =  \eta_\nu \rho d s
+\end{align}
+と定義するので、全体では
+\begin{align}
+d \Ilam = - \kappa_\nu \Ilam \rho d s + \eta_\nu \rho d s
+\end{align}
+となる。ここで放射源関数\index{ほうしゃげんかんすう@放射源関数}(source function) 
+\begin{align}
+\Jlam \equiv \frac{\eta_\nu}{\kappa_\nu}
+\end{align}
+を定義すると、放射伝達の式は
+\begin{align}
+\label{eq:radtran}
+  \frac{d \Ilam}{\kappa_\nu \rho \, d s} = - \Ilam  + \Jlam
+\end{align}
+とかける。
+さらに、光学的深さ
+\begin{align}
+d \tau = - \kappa_\nu \rho d z
+\label{eq:opticalddef}
+\end{align}
+を定義することで、ある軸$z$をとって$ds = \mu dz$と$\mu=\cos{\theta}$を用いて
+\begin{align}
+\label{eq:radtrantau}
+  \mu \frac{d \Ilam}{d \tau} = \Ilam  - \Jlam
+\end{align}
+となる。これをSchwarzschild equation\index{Schwarzschild equation@Schwarzschild equation}という。
+
+
+電磁波の減光(extinction)には、光が吸収(absorption)され真に消失する効果と、異なる方向へと散乱(scattering)されて消失する効果の二種類の和
+\begin{align}
+\mathrm{extinction = absorption + scattering}
+\label{eq:extsa}
+\end{align}
+となる。光子が原子・分子を電離し、原子の電離エネルギーと電離した電子の運動エネルギーとなる場合や、光子により原子・分子の電子が励起され、これが原子や分子同士の衝突により脱励起されることにより熱化する場合などは吸収に対応する。散乱は、光子が原子・分子の電子を励起した後、そのまま脱励起し同じ周波数の光子を出す場合や、電子、原子・分子による散乱などが含まれる。opacityの吸収、散乱による成分を、それぞれ、true absorption coefficient $\mu_a$ \index{true absorption coefficient@true absorption coefficient}とscattering coefficient $\mu_s$ \index{scattering coefficient@scattering coefficient}で表す。
+\begin{align}
+\kappa_\nu = \mu_a + \mu_s
+\label{eq:extsaa}
+\end{align}
+となる。このとき、emission coefficientはmean intensity 
+\begin{align}
+{J_\nu} &\equiv  \langle \Ilam \rangle = \frac{1}{4 \pi} \int P(\Omega) d \Omega \Ilam
+\end{align}
+を用いて($P(\Omega)$は散乱の特性関数)
+\begin{align}
+\eta_\nu = \mu_a B_\nu + \mu_s {J_\nu}
+\label{eq:emisaa}
+\end{align}
+と書ける。つまり放射源関数は
+\begin{align}
+\Jlam = \frac{\mu_a B_\nu + \mu_s {J_\nu}}{\mu_a + \mu_s} = (1 - \omega_0) B_\nu + \omega_0 {J_\nu}
+\label{eq:sourcef}
+\end{align}
+と書ける。ここに
+\begin{align}
+\omega_0 \equiv \frac{\mu_s}{\mu_a  + \mu_s}
+\label{eq:sia}
+\end{align}
+は単散乱アルベドと呼ばれる。つまり散乱のある場合の放射伝達式は、
+\begin{align}
+\label{eq:rtscat}
+\Jlam = \omega_0 J_\nu + (1 - \omega_0 ) B_\nu
+\end{align}
+となる。
+
+\section{輻射光スペクトルのモデリング}
+
+輻射光スペクトルの生成は放射伝達を解く必要がある。しかし散乱を無視できる場合、比較的簡単な放射伝達計算となる。散乱無し(pure absorption)の場合、Schwarzschild方程式が形式的に積分可能となることからIntensityに関してレイヤー間を伝達させることができる。この場合、射出フラックスは、ToAでのIntensityを角度方向に積分することにより最後に計算する。
+
+大気上端から取った鉛直方向のoptical depthを$\tau$とする。
+
+Schwarzschild Equatuionは
+\begin{align}
+    \mu \frac{d I_\nu}{d \tau} = I_\nu - \mathcal{J}_\nu    
+\end{align}
+であるから、$\tau^\prime = \tau/\mu$と定義することで、$I_\nu$を$\mu$の関数として
+\begin{align}
+    \dot{I}_\nu(\mu) =  I_\nu (\mu) - \mathcal{J}_\nu (\mu)
+\end{align}
+とおける。両辺に$e^{-\tau^\prime}$をかけることで、$\tau^\prime = \tau_A^\prime $から$\tau^\prime = \tau_B^\prime$まで積分を実行することができ、形式解
+\begin{align}
+     I_\nu (\tau_B^\prime; \mu) e^{-\tau_B^\prime} = I_\nu (\tau_A^\prime, \mu) e^{-\tau_A^\prime} - \int_{\tau_A^\prime}^{\tau_B^\prime} \mathcal{J}_\nu (\mu)  e^{-\tau^\prime} d \tau^\prime
+\end{align}
+が得られる。これは積分系のSchwarzchild equationである。
+%outgoing radiationを考えるので、$I_\nu(\tau;\mu)$の定義に符号反転したものを、$I^+(\tau;\mu)$とおく。
+波数の添え字を省略する。また散乱無しの放射を考える($\omega_0=0$)ので、式(\ref{eq:rtscat})より、$\mathcal{J}_\nu (\mu)$は角度依存性のないプランク関数によって置き換えられる。
+
+
+outgoingに寄与するintensityのみ、つまり$\mu \ge 0$のみを考えることにして$I(\tau, \mu)=I^+(\tau, \mu)$という表記を用いる\footnote{この意味では$\mu < 0$に対しては$I(\tau, \mu)=-I^-(\tau, \mu)$と定義される。}。ここである地点でoptical depthの基準をとり$\tau_B=0$として
+\begin{align}
+\label{eq:intensity_transfer}
+         I^+ (0; \mu) = I^+ (\tau_A^\prime, \mu) e^{-\tau_A^\prime} +\int^{\tau_A^\prime}_{0} B_\nu (\tau) e^{-\tau^\prime} d \tau^\prime
+\end{align}
+が得られる。
+
+式(\ref{eq:intensity_transfer})にて$\tau_A=\tau_s$ (下端)として、ある波数での放射伝達をTransmissionを$\mathsf{T}(z; \mu) \equiv e^{-\tau(z)/\mu}$として($z=0$が大気下端)、以下の量から計算することができる。
+\begin{align}
+    I^+(\mu) &= B_\nu(T_s) \mathsf{T} (z=0; \mu) + \int_0^\infty B_\nu(T) \frac{d \mathsf{T} (z)}{dz} dz 
+%    &= B(T) e^{-\tau_s^\prime} + \int_0^\infty B(T) e^{-\tau^\prime} d \tau^\prime
+\end{align}
+$T_s$は大気下端温度, $\tau_s^\prime = \tau_s/\mu$と定義した。
+上の式を$\mathsf{T}(z)$に関して離散化して
+\begin{align}
+    \label{eq:I_discrete_nemesis}
+    I^+(\mu) &= B_\nu(T_s) \mathsf{T}_{N_\mathrm{layer}-1}(\mu) \nonumber \\
+    &+ \sum_{j=0}^{N_\mathrm{layer}-1} B_\nu(T_j) (\mathsf{T}_{j-1}(\mu)- \mathsf{T}_j(\mu))
+\end{align}
+のように計算している\footnote{Irwin+では、大気下端から昇順にレイヤーインデックスを付与しているが、本文章では上端から昇順にインデックスを付与する。}。透過関数$\mathsf{T}_j = e^{\sum_{i=0}^j -\tau(z)/\mu}$であることからわかるように、式(\ref{eq:I_discrete_nemesis})の評価のために事前に透過関数を$0-j$まで計算しておく必要がある。
+
+これを$\mu$について複数の求積点をもちいて計算する。
+\begin{align}
+    F^+(0) = 2 \pi \int_0^1 \mu I^+(\mu)  d \mu
+\end{align}
+これは$N$流の産卵なしのIntensityに戻づく輻射計算に対応し、散乱系への拡張はそのままでは困難である。
+

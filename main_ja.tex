@@ -1,0 +1,303 @@
+%\documentclass[xelatex,a4paper]{bxjsreport}
+\documentclass[xelatex,a4paper, twocolumn]{bxjsreport}
+\usepackage[colorlinks=true, bookmarks=true,
+bookmarksnumbered=true, bookmarkstype=toc, linkcolor=cyan,urlcolor=blue, citecolor=blue]{hyperref}
+
+%\documentclass[a4paper]{bxjsreport}
+%\documentclass[xelatex,a4paper,precisetext,noautoxspacing]{bxjsbook}
+%
+\usepackage{fontspec}
+\usepackage{zxjatype}
+\usepackage{textcomp}
+\usepackage{mathcomp}
+%\usepackage{listings}
+%\usepackage{xltxtra}
+\usepackage{minted}
+%\usepackage{ascmac}
+
+% ---- 箱（ascmac の代替）----
+\usepackage{tcolorbox}
+\tcbuselibrary{breakable}
+\tcbuselibrary{skins}
+% ascmac の itembox 代替：第1引数＝tcolorboxのキー（任意），第2引数＝タイトル（必須）
+% 例）\begin{itembox}[halign title=left]{Problem} ... \end{itembox}
+\newtcolorbox{itembox}[1]{%
+  enhanced,breakable,
+  colback=white,colframe=black,boxrule=0.4pt,arc=2pt,
+  title={#1},
+}
+
+
+
+\setjamainfont{ipam.ttf}
+\setjasansfont{ipag.ttf}
+\setjamonofont{ipag.ttf}
+
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{bm}
+\usepackage{siunitx}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{mhchem}
+
+
+%\usepackage{xltxtra}
+
+\newcommand{\thetav}{\boldsymbol{\theta}}
+\newcommand{\dv}{\boldsymbol{d}}
+\newcommand{\rv}{\boldsymbol{r}}
+\newcommand{\ev}{\boldsymbol{e}}
+\newcommand{\Ysim}{\boldsymbol{Y}}
+\newcommand{\Ysims}{{Y}}
+\newcommand{\Yobs}{\boldsymbol{Y}_\mathrm{obs}}
+\newcommand{\Yobss}{{Y}_\mathrm{obs}}
+\newcommand{\Ysmsim}{\hat{Y}}
+\newcommand{\Ysmobs}{\hat{Y}_\mathrm{obs}}
+
+
+\newcommand{\Nsample}{N_\mathrm{s}}
+\newcommand{\isample}{i_\mathrm{s}}
+\newcommand{\Nthread}{N_\mathrm{th}}
+\newcommand{\ithread}{i_\mathrm{th}}
+\newcommand{\Nparticle}{N_\mathrm{p}}
+\newcommand{\sobs}{s(\Yobs)}
+\newcommand{\MES}{\mathrm{MES}}
+\newcommand{\CDPP}{\mathrm{CDPP}}
+
+%elements
+\newcommand{\Hel}{\mathsf{H}}
+\newcommand{\Oel}{\mathsf{O}}
+\newcommand{\Cel}{\mathsf{C}}
+\newcommand{\nel}{b}
+\newcommand{\bv}{\boldsymbol{b}}
+\newcommand{\nv}{\boldsymbol{n}}
+\newcommand{\fv}{\boldsymbol{f}}
+\newcommand{\Jv}{\boldsymbol{J}}
+\newcommand{\xv}{\boldsymbol{x}}
+\newcommand{\yv}{\boldsymbol{y}}
+
+%inference
+\newcommand{\epsilonv}{\boldsymbol{\epsilon}}
+\newcommand{\pv}{\boldsymbol{p}}
+\newcommand{\qv}{\boldsymbol{q}}
+
+%gp etc
+\newcommand{\Dp}{D} % # of parameters
+\newcommand{\Mp}{M} % # of models
+\newcommand{\Kp}{K} % # of layers
+
+
+\newcommand{\mv}{\boldsymbol{m}}
+\newcommand{\muv}{\boldsymbol{\mu}}
+\newcommand{\partialv}{\boldsymbol{\partial}}
+\newcommand{\omegav}{\boldsymbol{\omega}}
+\newcommand{\av}{\boldsymbol{a}}
+\newcommand{\uv}{\boldsymbol{u}}
+\newcommand{\vv}{\boldsymbol{v}}
+\newcommand{\gv}{\boldsymbol{g}}
+\newcommand{\tv}{\boldsymbol{t}}
+\newcommand{\mva}{\boldsymbol{m}^\ast}
+\newcommand{\Ng}{\mathcal{N}}
+\newcommand{\zerov}{\boldsymbol{0}}
+
+
+\newcommand{\Fv}{\boldsymbol{F}}
+\newcommand{\zv}{\boldsymbol{z}}
+\newcommand{\hv}{\boldsymbol{h}}
+\newcommand{\evv}{\boldsymbol{e}}
+\newcommand{\ntot}{n_\mathrm{tot}}
+\newcommand{\lnntot}{q_\mathrm{tot}}
+\newcommand{\lnnv}{\boldsymbol{q}}
+\newcommand{\lambdav}{\boldsymbol{\lambda}}
+\newcommand{\piv}{\boldsymbol{\pi}}
+\newcommand{\Piv}{\boldsymbol{\Pi}}
+\newcommand{\Lv}{\boldsymbol{L}}
+\newcommand{\lambdatot}{\lambda_\mathrm{tot}}
+\newcommand{\alphav}{\boldsymbol{\alpha}}
+\newcommand{\betav}{\boldsymbol{\beta}}
+\newcommand{\etav}{\boldsymbol{\eta}}
+\newcommand{\nelements}{m}
+\newcommand{\gtot}{g_\mathrm{tot}}
+
+
+\newcommand{\Blam}{B_\nu}
+\newcommand{\Ilam}{{\mathcal{I}_\nu}}
+\newcommand{\Jlam}{{\mathcal{J}_\nu}}
+\newcommand{\Jl}{{J_\nu}}
+\newcommand{\Hl}{{H_\nu}}
+\newcommand{\Kl}{{K_\nu}}
+\newcommand{\JlVIS}{{J_{\nu}^\star}}
+\newcommand{\HlVIS}{{H_{\nu}^\star}}
+\newcommand{\KlVIS}{{K_{\nu}^\star}}
+\newcommand{\Ilams}{{\mathcal{I}}}
+
+\newcommand{\Fsum}{F_\mathrm{sum}}
+\newcommand{\Fdif}{F_\mathrm{net}}
+\newcommand{\dotFsum}{\dot{F}_\mathrm{sum}}
+\newcommand{\dotFdif}{\dot{F}_\mathrm{net}}
+\newcommand{\ddotFsum}{\ddot{F}_\mathrm{sum}}
+\newcommand{\ddotFdif}{\ddot{F}_\mathrm{net}}
+
+\newcommand{\Il}{I_\nu}
+\newcommand{\Bl}{B_\nu}
+\newcommand{\dBl}{\dot{B}_\nu}
+
+\newcommand{\Jlu}{J_+}
+\newcommand{\Hlu}{H_+}
+\newcommand{\Jld}{J_-}
+\newcommand{\Hld}{H_-}
+\newcommand{\dHlu}{\dot{H}_+}
+\newcommand{\dHld}{\dot{H}_-}
+\newcommand{\Fnet}{F_\mathrm{net}}
+\newcommand{\dFsum}{\dot{F}_\mathrm{sum}}
+\newcommand{\ddFsum}{\ddot{F}_\mathrm{sum}}
+\newcommand{\dFnet}{\dot{F}_\mathrm{net}}
+\newcommand{\Bv}{\boldsymbol{\mathcal{B}}}
+\newcommand{\Gv}{\boldsymbol{G}}
+\newcommand{\Gaa}{\mathcal{G}_{11}}
+\newcommand{\Gab}{\mathcal{G}_{12}}
+\newcommand{\Gba}{\mathcal{G}_{21}}
+\newcommand{\Gbb}{\mathcal{G}_{22}}
+\newcommand{\Gcross}{\mathcal{G}_{\times}}
+
+
+\def\check#1{\color{red}{{\bf $\langle$Check : #1 $\rangle$}}\color{black}}
+
+\usepackage{color}
+\definecolor{red}{rgb}{0.8,0.0,0.0}
+\definecolor{gray}{rgb}{0.3,0.3,0.3}
+%\usepackage{algorithm}
+\usepackage{algorithmic}
+
+\setlength{\textwidth}{460pt}
+\setlength{\voffset}{0cm}
+\setlength{\topmargin}{0.0cm}
+\setlength{\headheight}{0.0cm}
+\setlength{\headsep}{1cm}
+\setlength{\oddsidemargin}{0.0cm}
+\setlength{\evensidemargin}{0.0cm}
+\begin{document}
+\title{系外惑星と推定： 東北大集中講義2025資料}
+\author{河原創}
+\maketitle
+
+\tableofcontents
+
+\chapter{Introduction}
+\input{ja/introduction}
+
+\input{ja/quantities}
+
+\chapter{惑星の運動}\label{ch:motion}
+系外惑星の観測量として惑星の運動に関するものを扱う。運動と関係する観測量としては、惑星による恒星の視線速度の運動である視線速度カーブ、天球方向の運動であるアストロメトリの二つがある。
+
+\input{ja/dynamics}
+\input{ja/radial_velocity}
+
+\chapter{運動の推定}\label{ch:infer}
+
+第\ref{ch:motion}章では系外惑星の運動に関する観測量の物理モデルを扱った。これらはすべて１次元の時系列データである。本章では一次元の時系列データから、物理モデルと統計モデルを組み合わせることでの内部パラメタである系外惑星の物理量の推定を行う。
+\input{ja/inference}
+\input{ja/bayes}
+\input{ja/gp}
+
+\chapter{系外惑星からのスペクトル}
+
+
+
+本章では惑星自身のもつ情報が埋め込まれたシグナルの概観を行う。惑星シグナルは、大まかに分けると恒星光が惑星大気を透過したもの、惑星からの熱輻射、もしくは恒星光が惑星により反射されたもののいずれかの形態をとる(表\ref{tab:spec_sep})。これらの惑星シグナルを分光することで系外惑星の大気を調べることができる。いずれの場合も、系外惑星大気を通過する光が、大気中の分子・原子や雲といった成分によって波長方向に吸収や散乱といった影響を受けて変化する。その変化をスペクトルを通じて検出することで大気を理解するということである。通過する光は上の三つの形態に応じて惑星自身が放つ輻射光と恒星光の光を利用する方法に分けることができる。前者は惑星からの輻射光という意味で今後「輻射光」と略記する。後者はそれぞれトランジット透過光と反射光であり、この二者は恒星光に惑星シグナルが刻まれるという意味でパッシブな手法であるとも見ることができる。
+
+\begin{table}[htbp]
+\footnotesize
+  \centering
+  \caption{スペクトル種類の分類}
+  \label{tab:spec_sep}
+  \begin{tabular}{ccc}
+    \hline
+    スペクトル & 手法 & 現在の主な対象 \\
+    \hline
+    透過光 & 透過光分光 & トランジット系\\
+                & 高分散分光 & トランジット系\\
+    \hline
+    輻射 & 二次食分光 & トランジット系\\
+                & 直接撮像 & 若い惑星\\
+                & 高分散分光 & 明るい系 \\
+    \hline
+    反射 & 直接撮像 & 地球近傍 \\ 
+                & 高分散分光 & 明るい系 \\
+  \end{tabular}
+\end{table}
+
+
+
+
+系外惑星分光の最大の問題は、いかに恒星光の影響を分離・除去し、惑星光のスペクトルを取り出すかというところにある。表\ref{tab:light_sep}に、分離方法に基づいた手法の分類を示す。まずデータ解析で分離すると手法は、恒星光と惑星光がまったく分離されていないスペクトルを取得し、データ解析的に惑星光を分離する手法である。トランジット系では、トランジット時の減光から、惑星の半径が計測できるが、これを波長ごとに行い、大気情報を得ることができる。この手法は\underline{透過光分光}と呼ばれる。トランジット系では、惑星が恒星の背面に隠れる時に、惑星光が隠された分やはり減光する。これは\underline{二次食}と呼ばれ、惑星光の分離に用いることができる。この二つの手法はトランジット系のみに用いることができる方法である。次に恒星光と惑星光が混ざったものに対し\underline{高分散分光}を利用し惑星光を取り出す手法がある。この手法では恒星と惑星の視線速度差を利用して、惑星由来の成分、具体的には、惑星大気の分子や原子の吸収線を同定する。この手法は非トランジット系にも適用可能である。最後に、装置的に恒星光を除去する手法が\underline{直接撮像法}である。この手法は、主に恒星光と惑星光の光の強度比（コントラスト）と恒星と惑星の分離角によって検出できるかどうかが決まる。分離角は観測者に近いほど相対的に大きくなるので、地球近傍の惑星系がターゲットとなる。また現在の直接撮像の性能では、コントラストが穏やかなものしか検出できないため、惑星が高温で自ら光っている若い惑星系のみが検出されている。ただし、今後の宇宙直接撮像や地上の装置性能の向上に伴い、原理的には通常の惑星系でも検出可能である。
+
+
+\begin{table}[htbp]
+\footnotesize
+  \centering
+  \caption{系外惑星分光法の分類}
+  \label{tab:light_sep}
+  \begin{tabular}{ccc}
+    \hline
+    分離手段 & 手法 & 対称 \\
+    \hline
+    データ解析 & 透過光分光 & トランジット惑星 \\
+     & 二次食分光 & トランジット惑星 \\
+     & 高分散分光 & トランジット or 高温惑星 \\
+    \hline
+    装置 & 直接撮像 & 若い惑星 or 地球近傍\\
+    \hline
+  \end{tabular}
+\end{table}
+
+
+
+\input{ja/transit}
+\input{ja/emisreflect}
+\input{ja/spectrum_example}
+%\input{} direct
+
+
+\chapter{系外惑星大気}
+\input{ja/chemistry}
+\input{ja/molecule}
+\input{ja/atmosphere}
+
+\chapter{スペクトルからの大気推定}
+
+スペクトルから惑星大気の諸量を推定する手順は大まかには以下のとおりである。
+\begin{enumerate}
+    \item 大気理論モデルの設定：パラメタを持つ大気モデルを作成し、モデルからスペクトルを生成できるコードを作成する
+    \item 確率モデルの設定：スペクトルデータに付随する誤差モデルと大気モデルの事前分布を設定する 
+    \item ベイズ推定の遂行：実スペクトルデータと生成したスペクトルから尤度を計算し、大気モデル中のパラメタの事後確率分布を求める
+\end{enumerate}
+
+大気理論モデルは、最も物理化学過程を含まないフリーリトリーバルでは、温度圧力分布自体を推定する。適当なパラメトライズモデルかガウス過程を用いたより自由なプロファイルを仮定することもできる。分子の存在量もパラメタとすることもできる。また高温系では熱化学平衡を仮定して、元素存在量を推定パラメタとすることも可能である。
+
+大気理論モデルが設定されたら、次にスペクトルを生成する。以下ではこのスペクトル生成部分を詳述する。ベイズ推定の部分は第\ref{ch:infer}章と基本的には同様である。
+
+\input{ja/transmission}
+\input{ja/emisspectrum}
+\input{ja/twostream}
+
+%\chapter{空間情報の推定}
+
+
+%\input{mcmc}
+%\input{abc}
+
+\footnotesize
+\bibliography{ref}{}
+
+\subsection*{教科書類}
+ベイズ推定はGelmanらのベイズデータ解析(BDA)、森北出版が定番である。またKevin P. MurphyのProbabilistic Machine Learningはさらに網羅的に重要な事項がまとめられている。
+
+
+
+
+\bibliographystyle{plain}
+
+\end{document}
+
