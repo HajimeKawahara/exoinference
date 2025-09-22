@@ -35,124 +35,7 @@
 \usepackage{algorithmic}
 %\usepackage{xltxtra}
 
-\newcommand{\thetav}{\boldsymbol{\theta}}
-\newcommand{\dv}{\boldsymbol{d}}
-\newcommand{\rv}{\boldsymbol{r}}
-\newcommand{\ev}{\boldsymbol{e}}
-\newcommand{\Ysim}{\boldsymbol{Y}}
-\newcommand{\Ysims}{{Y}}
-\newcommand{\Yobs}{\boldsymbol{Y}_\mathrm{obs}}
-\newcommand{\Yobss}{{Y}_\mathrm{obs}}
-\newcommand{\Ysmsim}{\hat{Y}}
-\newcommand{\Ysmobs}{\hat{Y}_\mathrm{obs}}
-
-
-\newcommand{\Nsample}{N_\mathrm{s}}
-\newcommand{\isample}{i_\mathrm{s}}
-\newcommand{\Nthread}{N_\mathrm{th}}
-\newcommand{\ithread}{i_\mathrm{th}}
-\newcommand{\Nparticle}{N_\mathrm{p}}
-\newcommand{\sobs}{s(\Yobs)}
-\newcommand{\MES}{\mathrm{MES}}
-\newcommand{\CDPP}{\mathrm{CDPP}}
-
-%elements
-\newcommand{\Hel}{\mathsf{H}}
-\newcommand{\Oel}{\mathsf{O}}
-\newcommand{\Cel}{\mathsf{C}}
-\newcommand{\nel}{b}
-\newcommand{\bv}{\boldsymbol{b}}
-\newcommand{\nv}{\boldsymbol{n}}
-\newcommand{\fv}{\boldsymbol{f}}
-\newcommand{\Jv}{\boldsymbol{J}}
-\newcommand{\xv}{\boldsymbol{x}}
-\newcommand{\yv}{\boldsymbol{y}}
-
-%inference
-\newcommand{\epsilonv}{\boldsymbol{\epsilon}}
-\newcommand{\pv}{\boldsymbol{p}}
-\newcommand{\qv}{\boldsymbol{q}}
-
-%gp etc
-\newcommand{\Dp}{D} % # of parameters
-\newcommand{\Mp}{M} % # of models
-\newcommand{\Kp}{K} % # of layers
-
-
-\newcommand{\mv}{\boldsymbol{m}}
-\newcommand{\muv}{\boldsymbol{\mu}}
-\newcommand{\partialv}{\boldsymbol{\partial}}
-\newcommand{\omegav}{\boldsymbol{\omega}}
-\newcommand{\av}{\boldsymbol{a}}
-\newcommand{\uv}{\boldsymbol{u}}
-\newcommand{\vv}{\boldsymbol{v}}
-\newcommand{\gv}{\boldsymbol{g}}
-\newcommand{\tv}{\boldsymbol{t}}
-\newcommand{\mva}{\boldsymbol{m}^\ast}
-\newcommand{\Ng}{\mathcal{N}}
-\newcommand{\zerov}{\boldsymbol{0}}
-
-
-\newcommand{\Fv}{\boldsymbol{F}}
-\newcommand{\zv}{\boldsymbol{z}}
-\newcommand{\hv}{\boldsymbol{h}}
-\newcommand{\evv}{\boldsymbol{e}}
-\newcommand{\ntot}{n_\mathrm{tot}}
-\newcommand{\lnntot}{q_\mathrm{tot}}
-\newcommand{\lnnv}{\boldsymbol{q}}
-\newcommand{\lambdav}{\boldsymbol{\lambda}}
-\newcommand{\piv}{\boldsymbol{\pi}}
-\newcommand{\Piv}{\boldsymbol{\Pi}}
-\newcommand{\Lv}{\boldsymbol{L}}
-\newcommand{\lambdatot}{\lambda_\mathrm{tot}}
-\newcommand{\alphav}{\boldsymbol{\alpha}}
-\newcommand{\betav}{\boldsymbol{\beta}}
-\newcommand{\etav}{\boldsymbol{\eta}}
-\newcommand{\nelements}{m}
-\newcommand{\gtot}{g_\mathrm{tot}}
-
-
-\newcommand{\Blam}{B_\nu}
-\newcommand{\Ilam}{{\mathcal{I}_\nu}}
-\newcommand{\Jlam}{{\mathcal{J}_\nu}}
-\newcommand{\Jl}{{J_\nu}}
-\newcommand{\Hl}{{H_\nu}}
-\newcommand{\Kl}{{K_\nu}}
-\newcommand{\JlVIS}{{J_{\nu}^\star}}
-\newcommand{\HlVIS}{{H_{\nu}^\star}}
-\newcommand{\KlVIS}{{K_{\nu}^\star}}
-\newcommand{\Ilams}{{\mathcal{I}}}
-
-\newcommand{\Fsum}{F_\mathrm{sum}}
-\newcommand{\Fdif}{F_\mathrm{net}}
-\newcommand{\dotFsum}{\dot{F}_\mathrm{sum}}
-\newcommand{\dotFdif}{\dot{F}_\mathrm{net}}
-\newcommand{\ddotFsum}{\ddot{F}_\mathrm{sum}}
-\newcommand{\ddotFdif}{\ddot{F}_\mathrm{net}}
-
-\newcommand{\Il}{I_\nu}
-\newcommand{\Bl}{B_\nu}
-\newcommand{\dBl}{\dot{B}_\nu}
-
-\newcommand{\Jlu}{J_+}
-\newcommand{\Hlu}{H_+}
-\newcommand{\Jld}{J_-}
-\newcommand{\Hld}{H_-}
-\newcommand{\dHlu}{\dot{H}_+}
-\newcommand{\dHld}{\dot{H}_-}
-\newcommand{\Fnet}{F_\mathrm{net}}
-\newcommand{\dFsum}{\dot{F}_\mathrm{sum}}
-\newcommand{\ddFsum}{\ddot{F}_\mathrm{sum}}
-\newcommand{\dFnet}{\dot{F}_\mathrm{net}}
-\newcommand{\Bv}{\boldsymbol{\mathcal{B}}}
-\newcommand{\Gv}{\boldsymbol{G}}
-\newcommand{\Gaa}{\mathcal{G}_{11}}
-\newcommand{\Gab}{\mathcal{G}_{12}}
-\newcommand{\Gba}{\mathcal{G}_{21}}
-\newcommand{\Gbb}{\mathcal{G}_{22}}
-\newcommand{\Gcross}{\mathcal{G}_{\times}}
-
-
+\input{commands}
 
 \setlength{\textwidth}{460pt}
 \setlength{\voffset}{0cm}
@@ -262,12 +145,16 @@ The overall workflow for inferring atmospheric properties from spectra is as fol
 
 In the most agnostic ``free-retrieval'' approach - i.e., one that includes minimal physico-chemical assumptions—the atmospheric forward model treats the temperature–pressure (T–P) profile itself as an unknown to be retrieved. One may assume an appropriate parametrized profile, or adopt a more flexible profile using a Gaussian process. Molecular abundances can likewise be treated as parameters. For high-temperature atmospheres, one can instead assume thermochemical equilibrium and retrieve elemental abundances.
 
-Once the atmospheric forward model has been specified, the next step is spectrum generation. Below, we describe this spectrum-synthesis component in detail. The Bayesian inference procedure is essentially the same as in Chapter~\ref{ch:infer}.
+Once the atmospheric forward model has been specified, the next step is spectrum generation. Below, we describe this spectrum-synthesis component in detail. 
+Moreover, in retrievals, opacity calculations often limit both computational speed and accuracy.  
+Therefore, we also describe practical methods for opacity computation.
+The Bayesian inference procedure is essentially the same as in Chapter~\ref{ch:infer}.
 
 
 \input{en/transmission}
 \input{en/emisspectrum}
 \input{en/twostream}
+\input{en/opacity}
 
 
 
