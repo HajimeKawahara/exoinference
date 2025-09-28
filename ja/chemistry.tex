@@ -148,7 +148,7 @@ CO <--> 0 $\Hel$ + 1 $\Cel$ + 1 $\Oel$ \\
 \label{eq:gibss_multi}
     \nv^\ast &= \mathrm{minimize}_{\nv} G(T, p, \nv) \nonumber \\
     &\mbox{subject to} \,\, A \, \nv = \bv, n_i \ge 0\\
-    G(T, p, \nv) &\equiv  \muv (T, P, \nv)^\top \nv\\ 
+    G(T, p, \nv) &\equiv  \muv (T, p, \nv)^\top \nv\\ 
     \label{eq:chemical_potential_mu}
     \muv (T, p, \nv) &=  \muv^\circ(T) + RT \log{\left(\frac{p}{\ntot} \nv\right)} 
 \end{align}
@@ -169,7 +169,7 @@ CO <--> 0 $\Hel$ + 1 $\Cel$ + 1 $\Oel$ \\
 
 ここではGordon and McBrideによるNASA/CEA (Chemical Equilibrium with Applications)の実装法を元に解説する\cite{gordon1994computer,2024arXiv241207166G}. CEAではLagrange multiplierを用いてGibbsエネルギー最小化を行う二次の手法の一つである. すなわち
 \begin{align}
-    (\nv^\ast, \lambdav)  &= \mathrm{minimize}_{(\nv,\lambdav)} \,\, \mathcal{L}(T, p, \nv, \lambdav) \\
+    (\nv^\ast, \lambdav^\ast)  &= \mathrm{minimize}_{(\nv,\lambdav)} \,\, \mathcal{L}(T, p, \nv, \lambdav) \\
     \mathcal{L}(T, p, \nv,\lambdav) &= G(T, p, \nv) + \lambdav^\top \left(A \nv - \bv\right)  
 \end{align}
 を最小化する. ただしこの時点では非負条件$n_i \ge 0$は外れていない. 
@@ -187,9 +187,9 @@ $\mathcal{L}(T, p, \nv, \lambdav)$の停留点を求めるために,最適化変
 の解をNewton法でもとめることで,$\yv^\ast = (\nv^\ast, \lambdav^\ast)$を求める. 次に式(\ref{eq:fv_tea0})の$\nv$成分を計算する
 \begin{align}
 \label{eq:Lpartialn}
-    \frac{\partial}{\partial \nv}   \mathcal{L}(T, p, \nv, \lambdav) =  \muv (T, P, \nv) + A^\top \lambdav  
+    \frac{\partial}{\partial \nv}   \mathcal{L}(T, p, \nv, \lambdav) =  \muv (T, p, \nv) + A^\top \lambdav  
 \end{align}
-ここに熱力学より$\partial_{\nv} G(T, p, \nv) =  \muv (T, P, \nv)$\footnote{式(\ref{eq:chemical_potential_mu})を用いて直接確かめることができる. }および$\lambdav^\top (A \nv) = (A^\top \lambdav)^\top \nv$と$\partial_{\xv} (S^\top \xv) = S$を利用した. 
+ここに熱力学より$\partial_{\nv} G(T, p, \nv) =  \muv (T, p, \nv)$\footnote{式(\ref{eq:chemical_potential_mu})を用いて直接確かめることができる. }および$\lambdav^\top (A \nv) = (A^\top \lambdav)^\top \nv$と$\partial_{\xv} (S^\top \xv) = S$を利用した. 
 式(\ref{eq:Lpartialn})は$\lambdav$について一次である点に注意する. $\lambdav$成分は単に保存関係
 \begin{align}
 \label{eq:Lpartiall}
@@ -214,17 +214,11 @@ $\mathcal{L}(T, p, \nv, \lambdav)$の停留点を求めるために,最適化変
 た数値計算となる. これにより新たな変数系として$\zv = (\lnnv, \lambdav, \lnntot)$が導入され,解くべき方程式は
 \begin{align}
 \label{eq:Lpartialncea}
-    \Fv_n (\zv) &\equiv \frac{\muv^\circ(T)}{RT} + \lnnv - \lnntot \, \uv + \log{p} \, \uv  + \frac{A^\top \lambdav}{RT}  \\
-    \Fv_\lambda (\zv) &\equiv A e^{\lnnv} - \bv = \boldsymbol{0}_M \\
+    \Fv_n (\zv) &\equiv \frac{\muv^\circ(T)}{RT} + \lnnv - \lnntot \, \uv_\ngas + \log{p} \, \uv_\ngas  + \frac{A^\top \lambdav}{RT} = \boldsymbol{0}_\ngas \\
+    \Fv_\lambda (\zv) &\equiv A e^{\lnnv} - \bv = \boldsymbol{0}_\nelements \\
     F_\mathrm{tot} (\zv) &\equiv \sum_i {e^{q_i}} - e^{\lnntot} = 0
 \end{align}
-の解
-\begin{align}
-  \Fv_n (\zv) &= \boldsymbol{0}_M \\
-  \Fv_\lambda (\zv) &= \boldsymbol{0}_M \\
-  F_\mathrm{tot} (\zv) &= 0
-\end{align}
-である. $\boldsymbol{0}_M$は$M$次元ゼロベクトルである. この解が$\zv^\ast = (\lnnv^\ast, \lambdav^\ast, \lnntot^\ast)$となる. これを簡潔に$\Fv (\zv) = (\Fv_n (\zv), \Fv_\lambda (\zv), F_\mathrm{tot} (\zv))$とまとめて扱うこともある.  
+である. $\boldsymbol{0}_\nelements$は$\nelements$次元ゼロベクトルである. この解が$\zv^\ast = (\lnnv^\ast, \lambdav^\ast, \lnntot^\ast)$となる. これを簡潔に$\Fv (\zv) = (\Fv_n (\zv), \Fv_\lambda (\zv), F_\mathrm{tot} (\zv))$とまとめて扱うこともある.  $\uv_\ngas$は$\ngas$次元 one vector.
 
 Newton法では$\Fv (\zv)$を$\zv$で微分したヤコビアンが必要となる. 
 \begin{align}
@@ -240,14 +234,14 @@ Newton法では$\Fv (\zv)$を$\zv$で微分したヤコビアンが必要とな�
 &=
 \left(
 \begin{array}{ccc}
- E_M &  \dfrac{A^\top}{RT} & - \uv\\ 
- Y(\lnnv) & Z_M & \boldsymbol{0}_M \\ 
- (e^{\qv})^\top & \boldsymbol{0}_M^\top & - e^\lnntot\\  
+ E_\ngas &  \dfrac{A^\top}{RT} & - \uv_\ngas\\ 
+ Y(\lnnv) & Z_\nelements & \boldsymbol{0}_\nelements \\ 
+ (e^{\qv})^\top & \boldsymbol{0}_\nelements^\top & - e^\lnntot\\  
 \end{array}
 \right)
 \end{align}
 となる. ここに
-$E_M$は$M \times M$単位行列,$Z_M$は$M \times M$ゼロ行列, $M$は元素ベクトル$\bv$の要素数である. また行列$Y(\lnnv)$は
+$E_\ngas$は$\ngas \times \ngas$単位行列,$Z_\nelements$は$\nelements \times \nelements$ゼロ行列, $\nelements$は元素ベクトル$\bv$の要素数である. また行列$Y(\lnnv)$は
 $Y(\lnnv)= A \, \mathrm{diag}(e^{\lnnv}) $のことであり,すなわち要素が
 \begin{align}
 Y_{ij} = A_{ij} e^{q_j}
@@ -256,9 +250,9 @@ Y_{ij} = A_{ij} e^{q_j}
 \begin{align}
     \left(
 \begin{array}{ccc}
- E_M &  \dfrac{A^\top}{RT} & - \uv\\ 
- Y(\lnnv) & Z_M & \boldsymbol{0}_M \\ 
- (e^{{\lnnv}_k})^\top & \boldsymbol{0}_M^\top & - e^{(\lnntot)_k}\\  
+ E_\ngas &  \dfrac{A^\top}{RT} & - \uv_\ngas\\ 
+ Y({\lnnv}_k) & Z_\nelements & \boldsymbol{0}_\nelements \\ 
+ (e^{{\lnnv}_k})^\top & \boldsymbol{0}_\nelements^\top & - e^{(\lnntot)_k}\\  
 \end{array}
 \right)
     &\left(
@@ -280,10 +274,10 @@ F_\mathrm{tot} (\zv_k)
 である. これよりupdate $\Delta \zv = (\Delta \lnnv, \Delta \lambdav, \Delta \lnntot)$は
 \begin{align}
 \label{eq:update_tce_1_}
-    &\Delta \lnnv + \frac{A^\top \Delta \lambdav}{RT} - \Delta \lnntot \uv \nonumber \\
-    &= -\frac{\muv^\circ(T)}{RT} - {\lnnv}_k + (\lnntot)_k \, \uv - \log{p} \, \uv  - \frac{A^\top \lambdav_k}{RT} \\
+    &\Delta \lnnv + \frac{A^\top \Delta \lambdav}{RT} - \Delta \lnntot \uv_\ngas \nonumber \\
+    &= -\frac{\muv^\circ(T)}{RT} - {\lnnv}_k + (\lnntot)_k \, \uv_\ngas - \log{p} \, \uv_\ngas  - \frac{A^\top \lambdav_k}{RT} \\
 \label{eq:update_tce_2_}
-    &Y(\lnnv_k) \Delta \lnnv = A (e^{\lnnv_k} \odot \Delta \lnnv) = \bv - A e^{\lnnv_k} \\
+    &Y({\lnnv}_k) \Delta \lnnv = A (e^{\lnnv_k} \odot \Delta \lnnv) = \bv - A e^{\lnnv_k} \\
 \label{eq:update_tce_3_}
     &(e^{\lnnv_k})^\top \Delta \lnnv  - e^{(\lnntot)_k} \Delta \lnntot = e^{(\lnntot)_k} - \sum_i {e^{(q_i)_k}} 
 \end{align}
@@ -296,10 +290,10 @@ $\Delta \lambdav$と$\lambdav_k$が出てくるのは式(\ref{eq:update_tce_1_})
 を定義し,$\lnnv, \piv, \lnntot$についてupdateする. $\piv$については使いきりであり保存しないことから$\Delta$をつけなかった. 式(\ref{eq:update_tce_1_})式は
 \begin{align}
 \label{eq:update_tce_1x}
-    \Delta \lnnv &=  A^\top \piv + \Delta \lnntot \uv - \gv_k(T) \\
-    \gv_k (T) &\equiv \frac{\muv^\circ(T)}{RT} + {\lnnv}_k - (\lnntot)_k \, \uv + \log{p} \, \uv 
+    \Delta \lnnv &=  A^\top \piv + \Delta \lnntot \uv_\ngas - \gv_k(T) \\
+    \gv_k (T) &\equiv \frac{\muv^\circ(T)}{RT} + {\lnnv}_k - (\lnntot)_k \, \uv_\ngas + \log{p} \, \uv_\ngas 
 \end{align}
-と書けるため,$\piv$と$\Delta \lnntot$が決まれば,我々の求めたい$\Delta \lnnv$を算出することができる. つまり,式(\ref{eq:update_tce_1x})を式(\ref{eq:update_tce_2_},\ref{eq:update_tce_3_})に代入した$M+1$この連立方程式
+と書けるため,$\piv$と$\Delta \lnntot$が決まれば,我々の求めたい$\Delta \lnnv$を算出することができる. つまり,式(\ref{eq:update_tce_1x})を式(\ref{eq:update_tce_2_},\ref{eq:update_tce_3_})に代入した$\nelements+1$この連立方程式
 \begin{align}
     &A \, \mathrm{diag} (e^{\lnnv_k}) \, A^\top \, \piv + \Delta \lnntot A e^{\lnnv_k} \nonumber \\
     &= A (e^{\lnnv_k} \odot \gv_k (T) ) + \bv - A  e^{\lnnv_k} \\
@@ -308,7 +302,7 @@ $\Delta \lambdav$と$\lambdav_k$が出てくるのは式(\ref{eq:update_tce_1_})
 \end{align}
 が解くべき方程式系となる. 上の式では変数を$\lnnv_k, (\lnntot)_k$に保持したままの式にしたが,コーディング上は例えば$e^{\lnnv}$は$\nv$に直しておいた方が見通しが良い. また,
 \begin{align}
-    B &\equiv  A \, \mathrm{diag} (\nv_k) \, A^\top \\
+    Q &\equiv  A \, \mathrm{diag} (\nv_k) \, A^\top \\
     \bv_k &\equiv A \nv_k \\
     \delta \bv_k &\equiv \bv - \bv_k \\
      \delta n_\mathrm{tot,k} &\equiv  \sum_i n_{k,i} - (n_\mathrm{tot})_{k}
@@ -316,7 +310,7 @@ $\Delta \lambdav$と$\lambdav_k$が出てくるのは式(\ref{eq:update_tce_1_})
 を定義する. ただし$\nv_k$の$i$成分を$n_{k,i}$と表記した. これらを行うと
 \begin{align}
 \label{eq:rgie1}
-   B \, \piv + \Delta \lnntot \bv_k &= A ( \nv_k \odot \gv_k (T) ) + \delta \bv_k \\
+   Q \, \piv + \Delta \lnntot \bv_k &= A ( \nv_k \odot \gv_k (T) ) + \delta \bv_k \\
 \label{eq:rgie2}
 %    \bv_k \cdot \piv +  \left( \sum_i n_{k,i} - (n_\mathrm{tot})_k \right) \Delta \lnntot &= \nv_k \cdot \gv_k(T) - \left(\sum_i n_{k,i} - (n_\mathrm{tot})_{k} \right) 
 \bv_k \cdot \piv + \delta n_\mathrm{tot, k} \Delta \lnntot &= \nv_k \cdot \gv_k(T) - \delta n_\mathrm{tot,k}

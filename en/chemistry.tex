@@ -142,7 +142,7 @@ For a multi-element system, the equilibrium abundances are obtained by minimizin
 \label{eq:gibss_multi}
     \nv^\ast &= \mathrm{minimize}_{\nv} G(T, p, \nv) \nonumber \\
     &\mbox{subject to} \,\, A \, \nv = \bv, \, n_i \ge 0, \\
-    G(T, p, \nv) &\equiv  \muv (T, P, \nv)^\top \nv, \\ 
+    G(T, p, \nv) &\equiv  \muv (T, p, \nv)^\top \nv, \\ 
     \label{eq:chemical_potential_mu}
     \muv (T, p, \nv) &=  \muv^\circ(T) + RT \log{\left(\frac{p}{\ntot} \nv\right)} ,
 \end{align}
@@ -163,7 +163,7 @@ For the \ce{CO, H2, CH4, H2O} system, Eq.~(\ref{eq:gibss_multi}) becomes
 
 Here we follow the implementation of NASA/CEA (Chemical Equilibrium with Applications) by Gordon and McBride \cite{gordon1994computer,2024arXiv241207166G}. In CEA, minimization of the Gibbs free energy is carried out using a quadratic Lagrange multiplier method. That is,
 \begin{align}
-    (\nv^\ast, \lambdav)  &= \mathrm{minimize}_{(\nv,\lambdav)} \,\, \mathcal{L}(T, p, \nv, \lambdav), \\
+    (\nv^\ast, \lambdav^\ast)  &= \mathrm{minimize}_{(\nv,\lambdav)} \,\, \mathcal{L}(T, p, \nv, \lambdav), \\
     \mathcal{L}(T, p, \nv,\lambdav) &= G(T, p, \nv) + \lambdav^\top \left(A \nv - \bv\right),
 \end{align}
 where at this stage the non-negativity condition $n_i \ge 0$ is not yet enforced.
@@ -183,9 +183,9 @@ using Newton’s method, yielding $\yv^\ast = (\nv^\ast, \lambdav^\ast)$.
 Next, computing the $\nv$-component of Eq.~(\ref{eq:fv_tea0}) gives
 \begin{align}
 \label{eq:Lpartialn}
-    \frac{\partial}{\partial \nv}   \mathcal{L}(T, p, \nv, \lambdav) =  \muv (T, P, \nv) + A^\top \lambdav,
+    \frac{\partial}{\partial \nv}   \mathcal{L}(T, p, \nv, \lambdav) =  \muv (T, p, \nv) + A^\top \lambdav,
 \end{align}
-where we have used the thermodynamic identity $\partial_{\nv} G(T, p, \nv) =  \muv (T, P, \nv)$\footnote{This can be verified directly from Eq.~(\ref{eq:chemical_potential_mu}).} together with $\lambdav^\top (A \nv) = (A^\top \lambdav)^\top \nv$ and $\partial_{\xv} (S^\top \xv) = S$.  
+where we have used the thermodynamic identity $\partial_{\nv} G(T, p, \nv) =  \muv (T, p, \nv)$\footnote{This can be verified directly from Eq.~(\ref{eq:chemical_potential_mu}).} together with $\lambdav^\top (A \nv) = (A^\top \lambdav)^\top \nv$ and $\partial_{\xv} (S^\top \xv) = S$.  
 Note that Eq.~(\ref{eq:Lpartialn}) is linear in $\lambdav$.  
 
 The $\lambdav$-component simply enforces the conservation relations:
@@ -212,17 +212,12 @@ Here, the CEA algorithm employs several tricks. First, to solve Eq.~(\ref{eq:fv_
 With these changes, we introduce the new variable set $\zv = (\lnnv, \lambdav, \lnntot)$, and the system to be solved is
 \begin{align}
 \label{eq:Lpartialncea}
-    \Fv_n (\zv) &\equiv \frac{\muv^\circ(T)}{RT} + \lnnv - \lnntot \, \uv + \log{p} \, \uv  + \frac{A^\top \lambdav}{RT},  \\
-    \Fv_\lambda (\zv) &\equiv A e^{\lnnv} - \bv = \boldsymbol{0}_M, \\
-    F_\mathrm{tot} (\zv) &\equiv \sum_i {e^{q_i}} - e^{\lnntot} = 0,
+    \Fv_n (\zv) &\equiv \frac{\muv^\circ(T)}{RT} + \lnnv - \lnntot \, \uv_\ngas + \log{p} \, \uv_\ngas  + \frac{A^\top \lambdav}{RT}= \boldsymbol{0}_\ngas,  \\
+    \Fv_\lambda (\zv) &\equiv A e^{\lnnv} - \bv = \boldsymbol{0}_\nelements, \\
+    F_\mathrm{tot} (\zv) &\equiv \sum_i {e^{q_i}} - e^{\lnntot} = 0.
 \end{align}
-whose solution satisfies
-\begin{align}
-  \Fv_n (\zv) &= \boldsymbol{0}_M, \\
-  \Fv_\lambda (\zv) &= \boldsymbol{0}_M, \\
-  F_\mathrm{tot} (\zv) &= 0.
-\end{align}
-Here $\boldsymbol{0}_M$ denotes the $M$-dimensional zero vector. The solution is $\zv^\ast = (\lnnv^\ast, \lambdav^\ast, \lnntot^\ast)$. For brevity we sometimes write $\Fv (\zv) = (\Fv_n (\zv), \Fv_\lambda (\zv), F_\mathrm{tot} (\zv))$.
+
+Here $\boldsymbol{0}_\nelements$ denotes the $\nelements$-dimensional zero vector. The solution is $\zv^\ast = (\lnnv^\ast, \lambdav^\ast, \lnntot^\ast)$. For brevity we sometimes write $\Fv (\zv) = (\Fv_n (\zv), \Fv_\lambda (\zv), F_\mathrm{tot} (\zv))$. $\uv_\ngas$ is a $\ngas$ dimensional one vector.
 
 Newton’s method requires the Jacobian $\Jv (\zv) = \partial \Fv / \partial \zv$:
 \begin{align}
@@ -238,13 +233,13 @@ Newton’s method requires the Jacobian $\Jv (\zv) = \partial \Fv / \partial \zv
 &=
 \left(
 \begin{array}{ccc}
- E_M &  \dfrac{A^\top}{RT} & - \uv\\ 
- Y(\lnnv) & Z_M & \boldsymbol{0}_M \\ 
- (e^{\qv})^\top & \boldsymbol{0}_M^\top & - e^\lnntot\\  
+ E_\ngas &  \dfrac{A^\top}{RT} & - \uv_\ngas\\ 
+ Y({\lnnv}) & Z_\nelements & \boldsymbol{0}_\nelements \\ 
+ (e^{\qv})^\top & \boldsymbol{0}_\nelements^\top & - e^\lnntot\\  
 \end{array}
 \right),
 \end{align}
-where $E_M$ is the $M \times M$ identity matrix, $Z_M$ is the $M \times M$ zero matrix, and $M$ is the number of elements (the length of $\bv$). The matrix $Y(\lnnv)$ is defined by
+where $E_\ngas$ is the $\ngas \times \ngas$ identity matrix, $Z_\nelements$ is the $\nelements \times \nelements$ zero matrix, and $\nelements$ is the number of elements (the length of $\bv$). The matrix $Y(\lnnv)$ is defined by
 \[
 Y(\lnnv)= A \, \mathrm{diag}(e^{\lnnv}),
 \]
@@ -257,9 +252,9 @@ From Eq.~(\ref{eq:second_newton}), the Newton update satisfies $\Jv (\zv_k) \, \
 \begin{align}
     \left(
 \begin{array}{ccc}
- E_M &  \dfrac{A^\top}{RT} & - \uv\\ 
- Y(\lnnv) & Z_M & \boldsymbol{0}_M \\ 
- (e^{{\lnnv}_k})^\top & \boldsymbol{0}_M^\top & - e^{(\lnntot)_k}\\  
+ E_\ngas &  \dfrac{A^\top}{RT} & - \uv_\ngas\\ 
+ Y({\lnnv}_k) & Z_\nelements & \boldsymbol{0}_\nelements \\ 
+ (e^{{\lnnv}_k})^\top & \boldsymbol{0}_\nelements^\top & - e^{(\lnntot)_k}\\  
 \end{array}
 \right)
     &\left(
@@ -281,8 +276,8 @@ F_\mathrm{tot} (\zv_k)
 Thus the update $\Delta \zv = (\Delta \lnnv, \Delta \lambdav, \Delta \lnntot)$ satisfies
 \begin{align}
 \label{eq:update_tce_1_}
-    &\Delta \lnnv + \frac{A^\top \Delta \lambdav}{RT} - \Delta \lnntot \, \uv \nonumber \\
-    &= -\frac{\muv^\circ(T)}{RT} - {\lnnv}_k + (\lnntot)_k \, \uv - \log{p} \, \uv  - \frac{A^\top \lambdav_k}{RT}, \\
+    &\Delta \lnnv + \frac{A^\top \Delta \lambdav}{RT} - \Delta \lnntot \, \uv_\ngas \nonumber \\
+    &= -\frac{\muv^\circ(T)}{RT} - {\lnnv}_k + (\lnntot)_k \, \uv_\ngas - \log{p} \, \uv_\ngas  - \frac{A^\top \lambdav_k}{RT}, \\
 \label{eq:update_tce_2_}
     &Y(\lnnv_k) \Delta \lnnv = A \left(e^{\lnnv_k} \odot \Delta \lnnv\right) = \bv - A e^{\lnnv_k}, \\
 \label{eq:update_tce_3_}
@@ -296,10 +291,10 @@ Only Eq.~(\ref{eq:update_tce_1_}) involves $\Delta \lambdav$ and $\lambdav_k$. S
 and update $\lnnv, \piv, \lnntot$ instead. (Because $\piv$ is a throwaway variable, we omit $\Delta$ on it.) Then Eq.~(\ref{eq:update_tce_1_}) becomes
 \begin{align}
 \label{eq:update_tce_1x}
-    \Delta \lnnv &=  A^\top \piv + \Delta \lnntot \, \uv - \gv_k(T), \\
-    \gv_k (T) &\equiv \frac{\muv^\circ(T)}{RT} + {\lnnv}_k - (\lnntot)_k \, \uv + \log{p} \, \uv .
+    \Delta \lnnv &=  A^\top \piv + \Delta \lnntot \, \uv_\ngas - \gv_k(T), \\
+    \gv_k (T) &\equiv \frac{\muv^\circ(T)}{RT} + {\lnnv}_k - (\lnntot)_k \, \uv_\ngas + \log{p} \, \uv_\ngas .
 \end{align}
-Hence, once $\piv$ and $\Delta \lnntot$ are determined, we can compute the desired $\Delta \lnnv$. Substituting Eq.~(\ref{eq:update_tce_1x}) into Eqs.~(\ref{eq:update_tce_2_}) and (\ref{eq:update_tce_3_}) yields the following system of $M+1$ linear equations:
+Hence, once $\piv$ and $\Delta \lnntot$ are determined, we can compute the desired $\Delta \lnnv$. Substituting Eq.~(\ref{eq:update_tce_1x}) into Eqs.~(\ref{eq:update_tce_2_}) and (\ref{eq:update_tce_3_}) yields the following system of $\nelements+1$ linear equations:
 \begin{align}
     &A \, \mathrm{diag} (e^{\lnnv_k}) \, A^\top \, \piv + \Delta \lnntot \, A e^{\lnnv_k} \nonumber \\
     &= A \left(e^{\lnnv_k} \odot \gv_k (T) \right) + \bv - A  e^{\lnnv_k}, \\
@@ -308,7 +303,7 @@ Hence, once $\piv$ and $\Delta \lnntot$ are determined, we can compute the desir
 \end{align}
 In the above, we retained $\lnnv_k$ and $(\lnntot)_k$ explicitly, but in code it is often clearer to revert $e^{\lnnv}$ to $\nv$. Define
 \begin{align}
-    B &\equiv  A \, \mathrm{diag} (\nv_k) \, A^\top, \\
+    Q &\equiv  A \, \mathrm{diag} (\nv_k) \, A^\top, \\
     \bv_k &\equiv A \nv_k, \\
     \delta \bv_k &\equiv \bv - \bv_k, \\
      \delta n_\mathrm{tot,k} &\equiv  \sum_i n_{k,i} - (n_\mathrm{tot})_{k},
@@ -316,7 +311,7 @@ In the above, we retained $\lnnv_k$ and $(\lnntot)_k$ explicitly, but in code it
 where $n_{k,i}$ denotes the $i$-th component of $\nv_k$. Then we obtain
 \begin{align}
 \label{eq:rgie1}
-   B \, \piv + \Delta \lnntot \, \bv_k &= A \left( \nv_k \odot \gv_k (T) \right) + \delta \bv_k, \\
+   Q \, \piv + \Delta \lnntot \, \bv_k &= A \left( \nv_k \odot \gv_k (T) \right) + \delta \bv_k, \\
 \label{eq:rgie2}
 \bv_k \cdot \piv + \delta n_\mathrm{tot, k} \, \Delta \lnntot &= \nv_k \cdot \gv_k(T) - \delta n_\mathrm{tot,k}.
 \end{align}
