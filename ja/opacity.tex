@@ -88,12 +88,18 @@ Voigt--Hjerting関数として Zaghloul and Ali\cite{2011arXiv1106.0151Z}によ�
  I &= \int_\mathrm{min}^\mathrm{max} f(\sigma(\nu)) d \nu \approx  \sum_i f(\sigma(\nu_i)) \Delta \nu_i
 \end{align}
 のように、定義域$\nu$方向に分割をして足し合わせる。しかし、非単射性が増してくると、何度も同じような$\sigma$の値について和を取らないとならない。そこで値域の測度に注目して積分を行うことを考える。
-いま、値域を互いに重ならない集合に分割する。たとえば$\sigma = \sigma_j$を含む微小領域$\Delta \sigma$内の値域をもつ定義域$\nu$の集合を$A_j$とすると
-値域は
+いま、値域を互いに重ならない集合に分割する。たとえば$\sigma = \sigma_j$を含む微小領域$\Delta \sigma$内の値域をもつ定義域$\nu$の集合を$A_j$とする。すなわち全波数の集合をを$U = [\nu_\mathrm
+{min}, \nu_\mathrm{max}]$とすると
+\begin{align}
+A_j = \{ \nu \in U | \sigma(\nu) \in [\sigma_j, \sigma_j + \Delta \sigma] \}
+\end{align}
+とする。$A_i \cap A_j = \varnothing$ for $i \ne j$である。
+値をもつ波数空間の台は
 \begin{align}
     V = \bigcup_{j=0}^{n} A_j
 \end{align}
-と表すことができる。集合$A$に関する特性関数
+と表すことができる。
+集合$A$に関する特性関数
 \begin{align}
    \chi_A (\nu) &= \begin{cases}
   1, & \text{if } \nu \in A \\
@@ -129,7 +135,7 @@ Voigt--Hjerting関数として Zaghloul and Ali\cite{2011arXiv1106.0151Z}によ�
 \end{align}
 となる。
 
-この$\sigma_j$は値域の小さいほうからビンをとっていて、$\Delta m_j$はこのビンに対応する定義域の測度、つまり定義域の対応する$\nu$空間の長さを表すものであるので、実務的には、$\sigma(g)$は $\sigma(\nu)$を細かく分割したテーブルをソートして、0-1に規格化すれば得られる。図\ref{fig:ckd_fig1}右はそのようにして得られた$\sigma(g)$である。いいかえると$\sigma$の累積分布関数である。ソートであるので単調増加関数となっている。ところでk分布という名前は、この分布関数をopacity ($k$であらわすことが多い)を用いていることに由来していると思われる。
+この$\sigma_j$は値域の小さいほうからビンをとっていて、$\Delta m_j$はこのビンに対応する定義域の測度、つまり定義域の対応する$\nu$空間の長さを表すものであるので、実務的には、$\sigma(g)$は $\sigma(\nu)$を細かく分割したテーブルをソートして、0-1に規格化すれば得られる。図\ref{fig:ckd_fig1}右はそのようにして得られた$\sigma(g)$である。言い換えると$g$は opacity の累積確率、$\sigma (g)$はそれを反転して得られるソート済み opacity (quantile function)である。ソートであるので単調増加関数となっている。ところでk分布という名前は、この分布関数をopacity ($k$であらわすことが多い)を用いていることに由来していると思われる。
 
 図\ref{fig:ckd_fig1}の塗りつぶし領域は、$f (\sigma) = \sigma$ととった場合の$\Delta g_j$からの寄与を$\nu-f$空間（左）で$g-f$空間(右)で図示したものとなっている。左図で測度$\Delta m_j$は、$\nu$軸で塗りつぶしが被っている領域の和である。これを$(\nu_\mathrm{max} - \nu_\mathrm{min})$で割ったものが右図の$\Delta g_j$に対応する。
 

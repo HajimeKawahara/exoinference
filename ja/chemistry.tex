@@ -184,12 +184,15 @@ $\mathcal{L}(T, p, \nv, \lambdav)$の停留点を求めるために,最適化変
     \label{eq:fv_tea}
     \fv(\yv^\ast) = \boldsymbol{0}
 \end{align}
-の解をNewton法でもとめることで,$\yv^\ast = (\nv^\ast, \lambdav^\ast)$を求める. 次に式(\ref{eq:fv_tea0})の$\nv$成分を計算する
+の解をNewton法でもとめることで,$\yv^\ast = (\nv^\ast, \lambdav^\ast)$を求める. 次に式(\ref{eq:fv_tea0})の$\nv$成分を計算する:
 \begin{align}
 \label{eq:Lpartialn}
     \frac{\partial}{\partial \nv}   \mathcal{L}(T, p, \nv, \lambdav) =  \muv (T, p, \nv) + A^\top \lambdav  
 \end{align}
 ここに熱力学より$\partial_{\nv} G(T, p, \nv) =  \muv (T, p, \nv)$\footnote{式(\ref{eq:chemical_potential_mu})を用いて直接確かめることができる. }および$\lambdav^\top (A \nv) = (A^\top \lambdav)^\top \nv$と$\partial_{\xv} (S^\top \xv) = S$を利用した. 
+最適化において、$\nv$の微分をゼロとする停留条件を用いるためには、$\nv \ge 0$の不等式制約条件について、 $\nv$の要素すべてが0でない(inactive)である必要がある。activeな要素($n_i=0$)の場合、最適値においてその微分値がゼロとは限らない。しかし、式(\ref{eq:Lpartialn})より、$n_i \to +0$で勾配が$\to -\infty$となるため、$n_i = 0$となることはない。これは後に$\nv$の対数を変数ととることの正当化ともなっている。\footnote{対照的に、凝縮相を含む系の場合、存在量が0になりうる（多くの凝縮種は0になる）ため、停留条件を用いることができるのは、非ゼロの種を同定でき、その凝縮種のみを扱う場合である。
+}
+
 式(\ref{eq:Lpartialn})は$\lambdav$について一次である点に注意する. $\lambdav$成分は単に保存関係
 \begin{align}
 \label{eq:Lpartiall}
@@ -210,7 +213,7 @@ $\mathcal{L}(T, p, \nv, \lambdav)$の停留点を求めるために,最適化変
 となる. 
 
 
-ここでCEAのアルゴリズムではいくつかのトリックを用いる. まず,式(\ref{eq:fv_tea})を求めるために,独立変数に$\ntot$を追加する. もともと$\ntot$は式(\ref{eq:ntot_tce})により$\nv$に依存していたため,この条件,つまり式(\ref{eq:ntot_tce})を,(前提条件ではなく)制約条件として追加する. さらに$\nv$, $\ntot$は対数を取ったものを独立変数に取り直す. つまり$\lnnv = \ln{\nv}$, $\lnntot = \ln{\ntot}$を独立変数とする.  この操作により非負条件$n_i \ge 0$は自然に取り除かれる. また対数を取ることで広いダイナミックレンジで安定し
+ここでCEAのアルゴリズムではいくつかのトリックを用いる. まず,式(\ref{eq:fv_tea})を求めるために,独立変数に$\ntot$を追加する. もともと$\ntot$は式(\ref{eq:ntot_tce})により$\nv$に依存していたため,この条件,つまり式(\ref{eq:ntot_tce})を,(前提条件ではなく)制約条件として追加する. さらに$\nv$, $\ntot$は対数を取ったものを独立変数に取り直す. つまり$\lnnv = \ln{\nv}$, $\lnntot = \ln{\ntot}$を独立変数とする.  この操作により非負条件$n_i > 0$は自然に取り除かれる. また対数を取ることで広いダイナミックレンジで安定し
 た数値計算となる. これにより新たな変数系として$\zv = (\lnnv, \lambdav, \lnntot)$が導入され,解くべき方程式は
 \begin{align}
 \label{eq:Lpartialncea}
@@ -285,7 +288,7 @@ F_\mathrm{tot} (\zv_k)
 
 $\Delta \lambdav$と$\lambdav_k$が出てくるのは式(\ref{eq:update_tce_1_})のみである. 我々は$\lambdav$自体には興味がないので,$\Delta \lambdav$に代わる,あらたなupdateとして
 \begin{align}
-    \piv \equiv - \frac{\Delta \lambdav + \lambdav}{RT} 
+    \piv \equiv - \frac{\Delta \lambdav + \lambdav_k}{RT} 
 \end{align}
 を定義し,$\lnnv, \piv, \lnntot$についてupdateする. $\piv$については使いきりであり保存しないことから$\Delta$をつけなかった. 式(\ref{eq:update_tce_1_})式は
 \begin{align}

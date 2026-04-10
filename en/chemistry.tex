@@ -185,7 +185,7 @@ Next, computing the $\nv$-component of Eq.~(\ref{eq:fv_tea0}) gives
 \label{eq:Lpartialn}
     \frac{\partial}{\partial \nv}   \mathcal{L}(T, p, \nv, \lambdav) =  \muv (T, p, \nv) + A^\top \lambdav,
 \end{align}
-where we have used the thermodynamic identity $\partial_{\nv} G(T, p, \nv) =  \muv (T, p, \nv)$\footnote{This can be verified directly from Eq.~(\ref{eq:chemical_potential_mu}).} together with $\lambdav^\top (A \nv) = (A^\top \lambdav)^\top \nv$ and $\partial_{\xv} (S^\top \xv) = S$.  
+where we have used the thermodynamic identity $\partial_{\nv} G(T, p, \nv) =  \muv (T, p, \nv)$\footnote{This can be verified directly from Eq.~(\ref{eq:chemical_potential_mu}).} together with $\lambdav^\top (A \nv) = (A^\top \lambdav)^\top \nv$ and $\partial_{\xv} (S^\top \xv) = S$.   In optimization, the stationarity condition -- obtained by setting the derivative with respect to $\nv$ to zero -- can only be applied when all elements of $\nv$ are nonzero (inactive with respect to the inequality constraint $\nv \ge 0$). For active elements ($n_i = 0$), the derivative is not necessarily zero at the optimal values. However, from Eq.~(\ref{eq:Lpartialn}), the gradient diverges to $-\infty$ as $n_i \to +0$, so $n_i = 0$ never occurs. This also justifies the later choice of using the logarithm of $\nv$ as optimization variables.\footnote{In contrast, in systems including condensate phases, some species can indeed have zero abundances (many condensates do), so the stationarity condition can only be applied when the nonzero condensate species are identified and treated separately.} 
 Note that Eq.~(\ref{eq:Lpartialn}) is linear in $\lambdav$.  
 
 The $\lambdav$-component simply enforces the conservation relations:
@@ -207,7 +207,7 @@ where $\ntot^\ast$ is a function of $\nv^\ast$:
 
 
 
-Here, the CEA algorithm employs several tricks. First, to solve Eq.~(\ref{eq:fv_tea}), we add $\ntot$ as an independent variable. Since $\ntot$ originally depended on $\nv$ via Eq.~(\ref{eq:ntot_tce}), we include this relation—namely Eq.~(\ref{eq:ntot_tce})—as a constraint (rather than as a prerequisite). Furthermore, we reparameterize $\nv$ and $\ntot$ by taking logarithms, i.e., we adopt $\lnnv = \ln{\nv}$ and $\lnntot = \ln{\ntot}$ as independent variables. This transformation naturally enforces the non-negativity constraints $n_i \ge 0$, and, by working in log-space, yields numerically stable computations over a wide dynamic range. 
+Here, the CEA algorithm employs several tricks. First, to solve Eq.~(\ref{eq:fv_tea}), we add $\ntot$ as an independent variable. Since $\ntot$ originally depended on $\nv$ via Eq.~(\ref{eq:ntot_tce}), we include this relation—namely Eq.~(\ref{eq:ntot_tce})—as a constraint (rather than as a prerequisite). Furthermore, we reparameterize $\nv$ and $\ntot$ by taking logarithms, i.e., we adopt $\lnnv = \ln{\nv}$ and $\lnntot = \ln{\ntot}$ as independent variables. This transformation naturally enforces the non-negativity constraints $n_i > 0$, and, by working in log-space, yields numerically stable computations over a wide dynamic range. 
 
 With these changes, we introduce the new variable set $\zv = (\lnnv, \lambdav, \lnntot)$, and the system to be solved is
 \begin{align}
@@ -286,7 +286,7 @@ Thus the update $\Delta \zv = (\Delta \lnnv, \Delta \lambdav, \Delta \lnntot)$ s
 
 Only Eq.~(\ref{eq:update_tce_1_}) involves $\Delta \lambdav$ and $\lambdav_k$. Since we are not directly interested in $\lambdav$, we introduce a new update variable
 \begin{align}
-    \piv \equiv - \frac{\Delta \lambdav + \lambdav}{RT},
+    \piv \equiv - \frac{\Delta \lambdav + \lambdav_k}{RT},
 \end{align}
 and update $\lnnv, \piv, \lnntot$ instead. (Because $\piv$ is a throwaway variable, we omit $\Delta$ on it.) Then Eq.~(\ref{eq:update_tce_1_}) becomes
 \begin{align}

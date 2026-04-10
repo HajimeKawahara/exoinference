@@ -113,8 +113,12 @@ However, as non-injectivity increases, one must sum over the same $\sigma$ value
 Thus, it is useful to consider integration with respect to the measure of the range instead.
 
 Now, divide the range into disjoint sets.  
-Let $A_j$ be the set of $\nu$ values whose range lies within a small region $\Delta \sigma$ around $\sigma = \sigma_j$.  
-The range can then be expressed as
+Let $A_j$ be the set of $\nu$ values whose range lies within a small region $\Delta \sigma$ around $\sigma = \sigma_j$.  In other word, defining the whole wavenumber set by $U = [\nu_\mathrm
+{min}, \nu_\mathrm{max}]$, we define
+\begin{align}
+A_j = \{ \nu \in U | \sigma(\nu) \in [\sigma_j, \sigma_j + \Delta \sigma] \}.
+\end{align}
+Note that $A_i \cap A_j = \varnothing$ for $i \ne j$. The support of the wavenumber set that has the value can then be expressed as
 \begin{align}
     V = \bigcup_{j=0}^{n} A_j.
 \end{align}
@@ -160,7 +164,7 @@ and becomes exact in the limit of infinite refinement:
 
 Here, $\sigma_j$ corresponds to bins taken from smaller to larger values, and $\Delta m_j$ represents the measure of the domain corresponding to these bins, i.e., the length of the $\nu$ space.  
 Practically, $\sigma(g)$ is obtained by sorting a finely sampled table of $\sigma(\nu)$ and normalizing it to $[0,1]$.  
-Figure~\ref{fig:ckd_fig1} (right) shows $\sigma(g)$ obtained in this way—essentially the cumulative distribution function of $\sigma$.  
+Figure~\ref{fig:ckd_fig1} (right) shows $\sigma(g)$ obtained in this way—essentially the inverse of the cumulative distribution function of $g$. In other words, $\sigma(g)$ is the quantile function.  
 Since it is based on sorting, it is a monotonically increasing function.  
 The name ``$k$-distribution'' originates from using opacity (commonly denoted $k$) in this distribution function.
 
